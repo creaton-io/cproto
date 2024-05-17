@@ -1,5 +1,6 @@
 import { DidWebResolver } from './web-resolver'
 import { DidPlcResolver } from './plc-resolver'
+import { DidCreatonResolver } from './creaton-resolver'
 import { DidResolverOpts } from '../types'
 import BaseResolver from './base-resolver'
 import { PoorlyFormattedDidError, UnsupportedDidMethodError } from '../errors'
@@ -14,6 +15,7 @@ export class DidResolver extends BaseResolver {
     this.methods = {
       plc: new DidPlcResolver(plcUrl, timeout),
       web: new DidWebResolver(timeout),
+      creaton: new DidCreatonResolver(timeout)
     }
   }
 
