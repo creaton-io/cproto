@@ -308,7 +308,8 @@ export class CredentialSession implements SessionManager {
     try {
       const res = await this.server.createSession({
         identifier: opts.identifier,
-        siweSignature: opts.siweSignature,
+        password: opts.password ?? '',
+        siweSignature: opts.siweSignature ?? '',
         authFactorToken: opts.authFactorToken,
       })
       this.session = {

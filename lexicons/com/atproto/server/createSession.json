@@ -15,6 +15,7 @@
               "type": "string",
               "description": "Handle or other identifier supported by the server for the authenticating user."
             },
+            "password": { "type": "string" },
             "siweSignature": { "type": "string" },
             "authFactorToken": { "type": "string" }
           }

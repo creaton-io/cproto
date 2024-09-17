@@ -2128,10 +2128,20 @@ export const schemaDict = {
               verificationPhone: {
                 type: 'string',
               },
+              password: {
+                type: 'string',
+                description:
+                  'Initial account password, optional if Ethereum Address is used. May need to meet instance-specific password strength requirements.',
+              },
               ethAddress: {
                 type: 'string',
                 description:
-                  'Initial ethereum address to be associated with the account.',
+                  'Initial ethereum address to be associated with the account, used to log in with signature',
+              },
+              signature: {
+                type: 'string',
+                description:
+                  'Signature to verify if user is owner of ethAddress',
               },
               recoveryKey: {
                 type: 'string',
@@ -2420,6 +2430,9 @@ export const schemaDict = {
                 type: 'string',
                 description:
                   'Handle or other identifier supported by the server for the authenticating user.',
+              },
+              password: {
+                type: 'string',
               },
               siweSignature: {
                 type: 'string',

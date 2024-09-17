@@ -25,10 +25,15 @@
             "inviteCode": { "type": "string" },
             "verificationCode": { "type": "string" },
             "verificationPhone": { "type": "string" },
+            "password": {
+              "type": "string",
+              "description": "Initial account password, optional if Ethereum Address is used. May need to meet instance-specific password strength requirements."
+            },
             "ethAddress": {
               "type": "string",
-              "description": "Initial ethereum address to be associated with the account."
+              "description": "Initial ethereum address to be associated with the account, used to log in with signature"
             },
+            "signature": { "type": "string", "description": "Signature to verify if user is owner of ethAddress" },
             "recoveryKey": {
               "type": "string",
               "description": "DID PLC rotation key (aka, recovery key) to be included in PLC creation operation."

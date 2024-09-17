@@ -46,7 +46,8 @@ export type AtpPersistSessionHandler = (
  */
 export interface AtpAgentLoginOpts {
   identifier: string
-  siweSignature: string
+  password?: string
+  siweSignature?: string
   authFactorToken?: string | undefined
 }
 

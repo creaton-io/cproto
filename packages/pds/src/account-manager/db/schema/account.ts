@@ -3,7 +3,8 @@ import { Generated, Selectable } from 'kysely'
 export interface Account {
   did: string
   email: string | null
-  ethAddress: string
+  passwordScrypt: string | null 
+  ethAddress: string | null
   emailConfirmedAt: string | null
   invitesDisabled: Generated<0 | 1>
 }

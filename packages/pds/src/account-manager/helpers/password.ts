@@ -9,18 +9,18 @@ export type AppPassDescript = {
   privileged: boolean
 }
 
-// export const verifyAccountPassword = async (
-//   db: AccountDb,
-//   did: string,
-//   password: string,
-// ): Promise<boolean> => {
-//   const found = await db.db
-//     .selectFrom('account')
-//     .selectAll()
-//     .where('did', '=', did)
-//     .executeTakeFirst()
-//   return found ? await scrypt.verify(password, found.ethAddress) : false
-// }
+export const verifyAccountPassword = async (
+  db: AccountDb,
+  did: string,
+  password: string,
+): Promise<boolean> => {
+  const found = await db.db
+    .selectFrom('account')
+    .selectAll()
+    .where('did', '=', did)
+    .executeTakeFirst()
+  return found?.passwordScrypt ? await scrypt.verify(password, found.passwordScrypt) : false
+}
 
 export const verifyAppPassword = async (
   db: AccountDb,

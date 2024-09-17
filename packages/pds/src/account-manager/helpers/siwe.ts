@@ -66,18 +66,13 @@ export const verifySIWE = async (db: AccountDb,
         //const { address: recoveredAddress, data, signature } = parseErc6492Signature(siweSignature)
 
         const verified = await publicClient.verifySiweMessage({
+          address: address,
           message: siweMessage,
           signature: siweSignature,
         })
       
-        if (verified) {
-          // TODO: this because other wise a user could log in with a different account with their own sig?
-          // Compare the recovered address with the stored address
-          // if (recoveredAddress.toLowerCase() !== siweParsedMessage.address.toLowerCase()) {
-          //   console.log("Recovered address doesn't match stored address")
-          //   return false
-          // }
-        
+        if (verified) {      
+          
           // Delete the SIWE message
           await db.db
             .deleteFrom('siwe')

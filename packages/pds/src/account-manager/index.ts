@@ -38,6 +38,7 @@ import * as emailToken from './helpers/email-token'
 import * as invite from './helpers/invite'
 import * as password from './helpers/password'
 import * as repo from './helpers/repo'
+import * as scrypt from './helpers/scrypt'
 import * as siwe from './helpers/siwe'
 import * as token from './helpers/token'
 import * as usedRefreshToken from './helpers/used-refresh-token'
@@ -115,7 +116,9 @@ export class AccountManager
     did: string
     handle: string
     email?: string
+    password?: string
     ethAddress?: string
+    signature?: string
     repoCid: CID
     repoRev: string
     inviteCode?: string
@@ -125,13 +128,18 @@ export class AccountManager
       did,
       handle,
       email,
+      password,
       ethAddress,
+      signature,
       repoCid,
       repoRev,
       inviteCode,
       deactivated,
     } = opts
     
+    const passwordScrypt = password
+      ? await scrypt.genSaltAndHash(password)
+      : undefined
 
     const { accessJwt, refreshJwt } = await auth.createTokens({
       did,
@@ -147,9 +155,8 @@ export class AccountManager
       }
       await Promise.all([
         account.registerActor(dbTxn, { did, handle, deactivated }),
-        console.log("ETH ADDRESS", ethAddress),
-        ethAddress
-          ? account.registerAccount(dbTxn, { did, email : email ?? null, ethAddress })
+        ethAddress || passwordScrypt
+          ? account.registerAccount(dbTxn, { did, email : email ?? null, passwordScrypt : passwordScrypt ?? null, ethAddress : ethAddress ?? null, signature: signature ?? null })
           : Promise.resolve(),
         invite.recordInviteUse(dbTxn, {
           did,
@@ -316,9 +323,12 @@ export class AccountManager
       }
 
       let appPassword: password.AppPassDescript | null = null
-      const validAccountPass = await this.verifySIWE(
+      const validAccountPass = password ? await this.verifySIWE(
         user.did,
         siweSignature as `0x${string}`
+      ) : await this.verifyAccountPassword(
+        user.did,
+        password,
       )
       if (!validAccountPass) {
         throw new AuthRequiredError('Wrong signature/App passwords are not allowed')
@@ -353,6 +363,13 @@ export class AccountManager
 
   async listAppPasswords(did: string) {
     return password.listAppPasswords(this.db, did)
+  }
+
+  async verifyAccountPassword(
+    did: string,
+    passwordStr: string,
+  ): Promise<boolean> {
+    return password.verifyAccountPassword(this.db, did, passwordStr)
   }
 
   async verifySIWE(

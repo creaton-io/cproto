@@ -77,8 +77,9 @@ export async function up(db: Kysely<unknown>): Promise<void> {
   await db.schema
     .createTable('account')
     .addColumn('did', 'varchar', (col) => col.primaryKey())
-    .addColumn('email', 'varchar', (col) => col.notNull())
-    .addColumn('ethAddress', 'varchar', (col) => col.notNull())
+    .addColumn('email', 'varchar') //TODO this might break something in the mail send functions, make sending mail optional
+    .addColumn('passwordScrypt', 'varchar')
+    .addColumn('ethAddress', 'varchar')
     .addColumn('emailConfirmedAt', 'varchar')
     .addColumn('invitesDisabled', 'int2', (col) => col.notNull().defaultTo(0))
     .execute()

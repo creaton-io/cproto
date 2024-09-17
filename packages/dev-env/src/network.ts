@@ -15,7 +15,7 @@ import { EXAMPLE_LABELER } from './const'
 import { IntrospectServer } from './introspect'
 
 const ADMIN_USERNAME = 'admin'
-const ADMIN_ETHADDRESS = '0xE6C9Ea928c0BA8fF32ab877D8F89C6cD1c47c515'
+const ADMIN_PASSWORD = 'admin-pass'
 
 export class TestNetwork extends TestNetworkNoAppView {
   constructor(
@@ -171,16 +171,16 @@ export class TestNetwork extends TestNetworkNoAppView {
 
   async adminHeaders({
     username = ADMIN_USERNAME,
-    ethAddress = ADMIN_ETHADDRESS,
+    password = ADMIN_PASSWORD,
   }: {
     username?: string
-    ethAddress?: string
+    password?: string
   }) {
     return {
       authorization:
         'Basic ' +
         uint8arrays.toString(
-          uint8arrays.fromString(`${username}:${ethAddress}`, 'utf8'),
+          uint8arrays.fromString(`${username}:${password}`, 'utf8'),
           'base64pad',
         ),
     }

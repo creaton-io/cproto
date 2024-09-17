@@ -2,6 +2,7 @@ import { isErrUniqueViolation, notSoftDeletedClause } from '../../db'
 import { AccountDb, ActorEntry } from '../db'
 import { StatusAttr } from '../../lexicon/types/com/atproto/admin/defs'
 import { DAY } from '@atproto/common'
+import { publicClient } from './siwe'
 
 export class UserAlreadyExistsError extends Error {}
 
@@ -122,22 +123,38 @@ export const registerAccount = async (
   opts: {
     did: string
     email: string | null
-    ethAddress: string
+    passwordScrypt: string | null
+    ethAddress: string | null
+    signature: string | null
   },
 ) => {
-  const { did, email, ethAddress } = opts
-  console.log("REGISTERING ACCOUNT", ethAddress)
+  const { did, email, passwordScrypt, ethAddress, signature } = opts
+
+  console.log('REGISTER SIGNATURE:', signature)
+
+  if (ethAddress) {
+
+    const verified = await publicClient.verifyMessage({
+      address: ethAddress as `0x${string}`,
+      message: 'Create account for Creaton',
+      signature: signature as `0x${string}`,
+    })
+    if (!verified) throw new Error('Invalid signature')
+  }
+
   const [registered] = await db.executeWithRetry(
     db.db
       .insertInto('account')
       .values({
         did,
         email: email?.toLowerCase() ?? null,
-        ethAddress,
+        passwordScrypt: passwordScrypt ?? null,
+        ethAddress: ethAddress ?? null,
       })
       .onConflict((oc) => oc.doNothing())
       .returning('did'),
   )
+
   if (!registered) {
     throw new UserAlreadyExistsError()
   }
