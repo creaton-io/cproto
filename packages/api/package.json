@@ -1,17 +1,17 @@
 {
-  "name": "@atproto/api",
-  "version": "0.13.7",
+  "name": "@cproto/api",
+  "version": "0.14.0",
   "license": "MIT",
-  "description": "Client library for atproto and Bluesky",
+  "description": "Client library for atproto and Bluesky, modified for Creaton",
   "keywords": [
     "atproto",
     "bluesky",
     "api"
   ],
-  "homepage": "https://atproto.com",
+  "homepage": "https://creaton.social",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bluesky-social/atproto",
+    "url": "https://github.com/creaton-io/cproto",
     "directory": "packages/api"
   },
   "main": "dist/index.js",
