@@ -2,7 +2,7 @@
   "name": "@cproto/pds",
   "version": "0.5.1",
   "license": "MIT",
-  "description": "Reference implementation of atproto Personal Data Server (PDS), modified for Creaton",
+  "description": "Reference implementation of atproto Personal Data Server (PDS)",
   "keywords": [
     "cproto",
     "pds"
@@ -88,5 +88,8 @@
     "jest": "^28.1.2",
     "ts-node": "^10.8.2",
     "ws": "^8.12.0"
+  },
+  "overrides": {
+    "@atproto/api": "npm:@cproto/api@0.14.0"
   }
 }
