@@ -29,7 +29,7 @@
     "@atproto/identity": "workspace:^",
     "@atproto/lexicon": "workspace:^",
     "@atproto/ozone": "workspace:^",
-    "@atproto/pds": "npm:@cproto/pds@^0.5.1",
+    "@atproto/pds": "npm:@cproto/pds@^0.5.3",
     "@atproto/sync": "workspace:^",
     "@atproto/syntax": "workspace:^",
     "@atproto/xrpc-server": "workspace:^",
@@ -44,5 +44,8 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13"
+  },
+  "overrides": {
+    "@did-plc/lib": "@cproto/did-plc-lib@^0.0.6"
   }
 }
