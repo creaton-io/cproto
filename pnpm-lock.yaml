@@ -13,7 +13,7 @@ importers:
         version: link:packages/dev-env
       '@changesets/changelog-github':
         specifier: ^0.4.8
-        version: 0.4.8
+        version: 0.4.8(encoding@0.1.13)
       '@changesets/cli':
         specifier: ^2.26.2
         version: 2.26.2
@@ -31,7 +31,7 @@ importers:
         version: 18.19.24
       '@typescript-eslint/eslint-plugin':
         specifier: ^7.4.0
-        version: 7.4.0(@typescript-eslint/parser@7.4.0)(eslint@8.57.0)(typescript@5.4.4)
+        version: 7.4.0(@typescript-eslint/parser@7.4.0(eslint@8.57.0)(typescript@5.4.4))(eslint@8.57.0)(typescript@5.4.4)
       '@typescript-eslint/parser':
         specifier: ^7.4.0
         version: 7.4.0(eslint@8.57.0)(typescript@5.4.4)
@@ -46,10 +46,10 @@ importers:
         version: 9.1.0(eslint@8.57.0)
       eslint-plugin-prettier:
         specifier: ^5.1.3
-        version: 5.1.3(eslint-config-prettier@9.1.0)(eslint@8.57.0)(prettier@3.2.5)
+        version: 5.1.3(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5)
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       node-gyp:
         specifier: ^9.3.1
         version: 9.3.1
@@ -98,7 +98,7 @@ importers:
         version: 6.1.2
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       prettier:
         specifier: ^3.2.5
         version: 3.2.5
@@ -176,10 +176,10 @@ importers:
         version: 1.3.0(@bufbuild/protobuf@1.6.0)
       '@connectrpc/connect-express':
         specifier: ^1.1.4
-        version: 1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect-node@1.3.0)(@connectrpc/connect@1.3.0)
+        version: 1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect-node@1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0)))(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0))
       '@connectrpc/connect-node':
         specifier: ^1.1.4
-        version: 1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0)
+        version: 1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0))
       '@did-plc/lib':
         specifier: ^0.0.1
         version: 0.0.1
@@ -230,7 +230,7 @@ importers:
         version: 0.32.6
       statsig-node:
         specifier: ^5.23.1
-        version: 5.23.1
+        version: 5.23.1(encoding@0.1.13)
       structured-headers:
         specifier: ^1.0.1
         version: 1.0.1
@@ -245,8 +245,8 @@ importers:
         specifier: workspace:^
         version: link:../lex-cli
       '@atproto/pds':
-        specifier: workspace:^
-        version: link:../pds
+        specifier: npm:@cproto/pds@0.5.1
+        version: '@cproto/pds@0.5.1(@aws-sdk/abort-controller@3.374.0)(typescript@5.4.4)'
       '@atproto/xrpc':
         specifier: workspace:^
         version: link:../xrpc
@@ -258,7 +258,7 @@ importers:
         version: 1.6.0(@bufbuild/protobuf@1.6.0)
       '@connectrpc/protoc-gen-connect-es':
         specifier: ^1.1.4
-        version: 1.3.0(@bufbuild/protoc-gen-es@1.6.0)(@connectrpc/connect@1.3.0)
+        version: 1.3.0(@bufbuild/protoc-gen-es@1.6.0(@bufbuild/protobuf@1.6.0))(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0))
       '@did-plc/server':
         specifier: ^0.0.1
         version: 0.0.1
@@ -282,7 +282,7 @@ importers:
         version: 0.27.2
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       ts-node:
         specifier: ^10.8.2
         version: 10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)
@@ -303,7 +303,7 @@ importers:
         version: 1.3.0(@bufbuild/protobuf@1.6.0)
       '@connectrpc/connect-node':
         specifier: ^1.1.4
-        version: 1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0)
+        version: 1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0))
       http-terminator:
         specifier: ^3.2.0
         version: 3.2.0
@@ -328,7 +328,7 @@ importers:
         version: 1.6.0(@bufbuild/protobuf@1.6.0)
       '@connectrpc/protoc-gen-connect-es':
         specifier: ^1.1.4
-        version: 1.3.0(@bufbuild/protoc-gen-es@1.6.0)(@connectrpc/connect@1.3.0)
+        version: 1.3.0(@bufbuild/protoc-gen-es@1.6.0(@bufbuild/protobuf@1.6.0))(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0))
       '@types/pg':
         specifier: ^8.6.6
         version: 8.6.6
@@ -337,7 +337,7 @@ importers:
         version: 5.1.1
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       ts-node:
         specifier: ^10.8.2
         version: 10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)
@@ -365,7 +365,7 @@ importers:
     devDependencies:
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3))
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -390,7 +390,7 @@ importers:
     devDependencies:
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
 
   packages/crypto:
     dependencies:
@@ -409,7 +409,7 @@ importers:
         version: link:../common
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
 
   packages/dev-env:
     dependencies:
@@ -438,8 +438,8 @@ importers:
         specifier: workspace:^
         version: link:../ozone
       '@atproto/pds':
-        specifier: workspace:^
-        version: link:../pds
+        specifier: npm:@cproto/pds@0.5.1
+        version: '@cproto/pds@0.5.1(@aws-sdk/abort-controller@3.374.0)(typescript@5.4.4)'
       '@atproto/sync':
         specifier: workspace:^
         version: link:../sync
@@ -517,7 +517,7 @@ importers:
         version: 6.1.2
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
 
   packages/internal/did-resolver:
     dependencies:
@@ -719,7 +719,7 @@ importers:
     devDependencies:
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
 
   packages/oauth/jwk:
     dependencies:
@@ -859,7 +859,7 @@ importers:
         version: 0.4.4(rollup@4.18.0)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(typescript@5.4.4)
+        version: 11.1.6(rollup@4.18.0)(tslib@2.6.2)(typescript@5.4.4)
       '@types/react':
         specifier: ^18.2.50
         version: 18.3.2
@@ -883,13 +883,13 @@ importers:
         version: 4.18.0
       rollup-plugin-postcss:
         specifier: ^4.0.2
-        version: 4.0.2(postcss@8.4.38)
+        version: 4.0.2(postcss@8.4.38)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       rollup-plugin-serve:
         specifier: ^1.1.1
         version: 1.1.1
       tailwindcss:
         specifier: ^3.4.1
-        version: 3.4.3
+        version: 3.4.3(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       typescript:
         specifier: ^5.3.3
         version: 5.4.4
@@ -1003,7 +1003,7 @@ importers:
         version: 0.4.4(rollup@4.18.0)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.0)(typescript@5.4.4)
+        version: 11.1.6(rollup@4.18.0)(tslib@2.6.2)(typescript@5.4.4)
       '@types/cookie':
         specifier: ^0.6.0
         version: 0.6.0
@@ -1042,10 +1042,10 @@ importers:
         version: 4.18.0
       rollup-plugin-postcss:
         specifier: ^4.0.2
-        version: 4.0.2(postcss@8.4.38)
+        version: 4.0.2(postcss@8.4.38)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       tailwindcss:
         specifier: ^3.4.1
-        version: 3.4.3
+        version: 3.4.3(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       typescript:
         specifier: ^5.3.3
         version: 5.4.4
@@ -1139,8 +1139,8 @@ importers:
         specifier: workspace:^
         version: link:../lex-cli
       '@atproto/pds':
-        specifier: workspace:^
-        version: link:../pds
+        specifier: npm:@cproto/pds@0.5.1
+        version: '@cproto/pds@0.5.1(@aws-sdk/abort-controller@3.374.0)(typescript@5.4.4)'
       '@did-plc/server':
         specifier: ^0.0.1
         version: 0.0.1
@@ -1161,7 +1161,7 @@ importers:
         version: 6.9.7
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       ts-node:
         specifier: ^10.8.2
         version: 10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)
@@ -1204,6 +1204,9 @@ importers:
       '@atproto/xrpc-server':
         specifier: workspace:^
         version: link:../xrpc-server
+      '@cproto/did-plc-lib':
+        specifier: ^0.0.5
+        version: 0.0.5
       '@did-plc/lib':
         specifier: ^0.0.4
         version: 0.0.4
@@ -1330,7 +1333,7 @@ importers:
         version: 6.1.2
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       ts-node:
         specifier: ^10.8.2
         version: 10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)
@@ -1370,7 +1373,7 @@ importers:
     devDependencies:
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
 
   packages/sync:
     dependencies:
@@ -1401,13 +1404,13 @@ importers:
     devDependencies:
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
 
   packages/syntax:
     devDependencies:
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
 
   packages/xrpc:
     dependencies:
@@ -1478,7 +1481,7 @@ importers:
         version: 6.1.2
       jest:
         specifier: ^28.1.2
-        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2)
+        version: 28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       jose:
         specifier: ^4.15.4
         version: 4.15.4
@@ -1525,17 +1528,17 @@ importers:
   services/pds:
     dependencies:
       '@atproto/pds':
-        specifier: workspace:^
-        version: link:../../packages/pds
+        specifier: npm:@cproto/pds@0.5.1
+        version: '@cproto/pds@0.5.1(@aws-sdk/abort-controller@3.374.0)(typescript@5.4.4)'
       '@opentelemetry/instrumentation':
         specifier: ^0.45.0
-        version: 0.45.1(@opentelemetry/api@1.8.0)
+        version: 0.45.1(@opentelemetry/api@1.7.0)
       dd-trace:
         specifier: ^4.18.0
         version: 4.20.0
       opentelemetry-plugin-better-sqlite3:
         specifier: ^1.1.0
-        version: 1.1.0(better-sqlite3@9.4.5)
+        version: 1.1.0(better-sqlite3@10.0.0)
 
 packages:
 
@@ -1554,17 +1557,80 @@ packages:
     resolution: {integrity: sha512-lFMjJTrFL3j7L9yBxwYfCq2k6qqwHyzuUl/XBnif78PWTJYyL/dfowQHWE3sp6U6ZzqWiiIZnpTMO96zhkjwtg==}
     engines: {node: '>=6.0.0'}
 
+  '@atproto-labs/fetch-node@0.1.0':
+    resolution: {integrity: sha512-DUHgaGw8LBqiGg51pUDuWK/alMcmNbpcK7ALzlF2Gw//TNLTsgrj0qY9aEtK+np9rEC+x/o3bN4SGnuQEpgqIg==}
+
+  '@atproto-labs/fetch@0.1.0':
+    resolution: {integrity: sha512-uirja+uA/C4HNk7vayM+AJqsccxQn2wVziUHxbsjJGt/K6Q8ZOKDaEX2+GrcXvpUVcqUKh+94JFjuzH+CAEUlg==}
+
+  '@atproto-labs/pipe@0.1.0':
+    resolution: {integrity: sha512-ghOqHFyJlQVFPESzlVHjKroP0tPzbmG5Jms0dNI9yLDEfL8xp4OFPWLX4f6T8mRq69wWs4nIDM3sSsFbFqLa1w==}
+
+  '@atproto-labs/simple-store-memory@0.1.1':
+    resolution: {integrity: sha512-PCRqhnZ8NBNBvLku53O56T0lsVOtclfIrQU/rwLCc4+p45/SBPrRYNBi6YFq5rxZbK6Njos9MCmILV/KLQxrWA==}
+
+  '@atproto-labs/simple-store@0.1.1':
+    resolution: {integrity: sha512-WKILW2b3QbAYKh+w5U2x6p5FqqLl0nAeLwGeDY+KjX01K4Dq3vQTR9b/qNp0jZm48CabPQVrqCv0PPU9LgRRRg==}
+
+  '@atproto/aws@0.2.5':
+    resolution: {integrity: sha512-1FAHUlCbfzL2jpwG/Wpr/N2gcrvlJaYYMwTbLhI0r/hU0B15DYNPUuxyeSDXsc6Ld4F8kGd+Fqam5AA+Wft6rA==}
+
+  '@atproto/common-web@0.3.0':
+    resolution: {integrity: sha512-67VnV6JJyX+ZWyjV7xFQMypAgDmjVaR9ZCuU/QW+mqlqI7fex2uL4Fv+7/jHadgzhuJHVd6OHOvNn0wR5WZYtA==}
+
   '@atproto/common@0.1.0':
     resolution: {integrity: sha512-OB5tWE2R19jwiMIs2IjQieH5KTUuMb98XGCn9h3xuu6NanwjlmbCYMv08fMYwIp3UQ6jcq//84cDT3Bu6fJD+A==}
 
   '@atproto/common@0.1.1':
     resolution: {integrity: sha512-GYwot5wF/z8iYGSPjrLHuratLc0CVgovmwfJss7+BUOB6y2/Vw8+1Vw0n9DDI0gb5vmx3UI8z0uJgC8aa8yuJg==}
 
+  '@atproto/common@0.3.0':
+    resolution: {integrity: sha512-R5d50Da63wQdAYaHe+rne5nM/rSYIWBaDZtVKpluysG86U1rRIgrG4qEQ/tNDt6WzYcxKXkX4EOeVvGtav2twg==}
+
+  '@atproto/common@0.4.2':
+    resolution: {integrity: sha512-tv9lHjaoXW7CQrXUiu81RJZJ/bgcPSMaXrrgN4DxS08Z97hor0jgxThlwmGny1p6ksTZ5/bCX9GeJqi/b4LDCg==}
+
   '@atproto/crypto@0.1.0':
     resolution: {integrity: sha512-9xgFEPtsCiJEPt9o3HtJT30IdFTGw5cQRSJVIy5CFhqBA4vDLcdXiRDLCjkzHEVbtNCsHUW6CrlfOgbeLPcmcg==}
 
+  '@atproto/crypto@0.3.0':
+    resolution: {integrity: sha512-bhcxRTL4fgRY2YX/St0x4o0oDUp18QIPD7ek+7v8UKA0HpsCGQYbo8w9d9hUvwwty5X5p00cYF2tbggUWaPy7A==}
+
+  '@atproto/crypto@0.4.1':
+    resolution: {integrity: sha512-7pQNHWYyx8jGhYdPbmcuPD9W73nd/5v3mfBlncO0sBzxnPbmA6aXAWOz+fNVZwHwBJPeb/Gzf/FT/uDx7/eYFg==}
+
+  '@atproto/identity@0.4.1':
+    resolution: {integrity: sha512-5AoPJDSD0rAay/6Sib+n/FjfwGulM/+xCNxwwDLR9QI4EoeUlvIH8g5BNdix812v312/Qd42kJrLpCNTZ5rvew==}
+
+  '@atproto/jwk-jose@0.1.2':
+    resolution: {integrity: sha512-lDwc/6lLn2aZ/JpyyggyjLFsJPMntrVzryyGUx5aNpuTS8SIuc4Ky0REhxqfLopQXJJZCuRRjagHG3uP05/moQ==}
+
+  '@atproto/jwk@0.1.1':
+    resolution: {integrity: sha512-6h/bj1APUk7QcV9t/oA6+9DB5NZx9SZru9x+/pV5oHFI9Xz4ZuM5+dq1PfsJV54pZyqdnZ6W6M717cxoC7q7og==}
+
+  '@atproto/lexicon@0.4.1':
+    resolution: {integrity: sha512-bzyr+/VHXLQWbumViX5L7h1NKQObfs8Z+XZJl43OUK8nYFUI4e/sW1IZKRNfw7Wvi5YVNK+J+yP3DWIBZhkCYA==}
+
+  '@atproto/oauth-provider@0.2.1':
+    resolution: {integrity: sha512-Ly0GkL25B5n3loAMTBYZjoHoQjfW+vv3zMZmT/+IBjcF9bp+TlpKFopWRAPqKQmwGgbgOuvI+HeKa9VwiDt1SA==}
+
+  '@atproto/oauth-types@0.1.4':
+    resolution: {integrity: sha512-B5lFXMvsx9PtO0wwCqwaoRVG8vKxvB742vO4Ze5OMJJsps6ebGskaYmkFHP9DnvDSLRzIHpJJ7jN6ri71V+xng==}
+
   '@atproto/pds@0.3.0-entryway.3':
     resolution: {integrity: sha512-hc/KcBgFjSfrnNgrc9vx/QaCov79cXbRRQEWrAt/rdMLhcFEGCydN7ukddjOiLkLdhDqywSHrLOEbqg+MReQXw==}
+
+  '@atproto/repo@0.5.1':
+    resolution: {integrity: sha512-/asnjlqoDiJrKnBGsv9Xg4sUMKK0YsaLBMt6AepWfwrXTTfHPLY7QxyyFMxxuzQQtLyYaj4lIn5zhmNz7TXf0w==}
+
+  '@atproto/syntax@0.3.0':
+    resolution: {integrity: sha512-Weq0ZBxffGHDXHl9U7BQc2BFJi/e23AL+k+i5+D9hUq/bzT4yjGsrCejkjq0xt82xXDjmhhvQSZ0LqxyZ5woxA==}
+
+  '@atproto/xrpc-server@0.6.4':
+    resolution: {integrity: sha512-AL9okOTpJpxh3wJjT27RiPkp2IWIxDPCyyvuO1SJu0E9URGfWZL26SlT7/IR/tadZTJezr5+ZNuxhV0uhI+s1A==}
+
+  '@atproto/xrpc@0.6.2':
+    resolution: {integrity: sha512-as/gb08xJb02HAGNrSQSumCe10WnOAcnM6bR6KMatQyQJuEu7OY6ZDSTM/4HfjjoxsNqdvPmbYuoUab1bKTNlA==}
 
   '@aws-crypto/crc32@2.0.0':
     resolution: {integrity: sha512-TvE1r2CUueyXOuHdEigYjIZVesInd9KN+K/TFFNfkkxRThiNxO6i4ZqqAVMoEjAamZZ1AA8WXJkjCz7YShHPQA==}
@@ -2725,6 +2791,16 @@ packages:
       '@connectrpc/connect':
         optional: true
 
+  '@cproto/api@0.14.0':
+    resolution: {integrity: sha512-vuEJhyL/hiQRXvsVwRZqORjcx6EXRxcjGfnbW5AsSFdI+WIuj0W0oiqnYOoRCXfgmPOLjggFtsJxRSfSRzbpsw==}
+
+  '@cproto/did-plc-lib@0.0.5':
+    resolution: {integrity: sha512-fjRa/ald5RdeEdQeKpVB7drwZtxdyd9hvC4iQVfE57UNzm8lPO4YMyOr3ojMONyNhvshK3oszt6j/Zaj8Oqq9w==}
+
+  '@cproto/pds@0.5.1':
+    resolution: {integrity: sha512-S0pVm3CuC+L3Hv2WXuKzOikmIZcCInifwhbySlNbUwFVb4ZoLXe8VEg4JXpxlgx5xC6JxOf1W7coqVpphYokiA==}
+    hasBin: true
+
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -3009,10 +3085,6 @@ packages:
 
   '@opentelemetry/api@1.7.0':
     resolution: {integrity: sha512-AdY5wvN0P2vXBi3b29hxZgSFvdhdxPB9+f0B6s//P9Q8nibRWeA3cHm8UmLpio9ABigkVHJ5NMPk+Mz8VCCyrw==}
-    engines: {node: '>=8.0.0'}
-
-  '@opentelemetry/api@1.8.0':
-    resolution: {integrity: sha512-I/s6F7yKUDdtMsoBWXJe8Qz40Tui5vsuKCWJEWVL+5q9sSWRzzx6v2KeNsOBEwd94j0eWkpWCH4yB6rZg9Mf0w==}
     engines: {node: '>=8.0.0'}
 
   '@opentelemetry/core@1.18.1':
@@ -7512,6 +7584,54 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.25
 
+  '@atproto-labs/fetch-node@0.1.0':
+    dependencies:
+      '@atproto-labs/fetch': 0.1.0
+      '@atproto-labs/pipe': 0.1.0
+      ipaddr.js: 2.1.0
+      psl: 1.9.0
+      undici: 6.18.1
+
+  '@atproto-labs/fetch@0.1.0':
+    dependencies:
+      '@atproto-labs/pipe': 0.1.0
+    optionalDependencies:
+      zod: 3.23.8
+
+  '@atproto-labs/pipe@0.1.0': {}
+
+  '@atproto-labs/simple-store-memory@0.1.1':
+    dependencies:
+      '@atproto-labs/simple-store': 0.1.1
+      lru-cache: 10.2.0
+
+  '@atproto-labs/simple-store@0.1.1': {}
+
+  '@atproto/aws@0.2.5(@aws-sdk/abort-controller@3.374.0)':
+    dependencies:
+      '@atproto/common': 0.4.2
+      '@atproto/crypto': 0.4.1
+      '@atproto/repo': 0.5.1
+      '@aws-sdk/client-cloudfront': 3.261.0
+      '@aws-sdk/client-kms': 3.196.0
+      '@aws-sdk/client-s3': 3.224.0
+      '@aws-sdk/lib-storage': 3.226.0(@aws-sdk/abort-controller@3.374.0)(@aws-sdk/client-s3@3.224.0)
+      '@noble/curves': 1.4.0
+      key-encoder: 2.0.3
+      multiformats: 9.9.0
+      uint8arrays: 3.0.0
+    transitivePeerDependencies:
+      - '@aws-sdk/abort-controller'
+      - '@aws-sdk/signature-v4-crt'
+      - aws-crt
+
+  '@atproto/common-web@0.3.0':
+    dependencies:
+      graphemer: 1.4.0
+      multiformats: 9.9.0
+      uint8arrays: 3.0.0
+      zod: 3.23.8
+
   '@atproto/common@0.1.0':
     dependencies:
       '@ipld/dag-cbor': 7.0.3
@@ -7526,6 +7646,23 @@ snapshots:
       pino: 8.21.0
       zod: 3.23.8
 
+  '@atproto/common@0.3.0':
+    dependencies:
+      '@atproto/common-web': 0.3.0
+      '@ipld/dag-cbor': 7.0.3
+      cbor-x: 1.5.1
+      multiformats: 9.9.0
+      pino: 8.21.0
+
+  '@atproto/common@0.4.2':
+    dependencies:
+      '@atproto/common-web': 0.3.0
+      '@ipld/dag-cbor': 7.0.3
+      cbor-x: 1.5.1
+      iso-datestring-validator: 2.2.2
+      multiformats: 9.9.0
+      pino: 8.21.0
+
   '@atproto/crypto@0.1.0':
     dependencies:
       '@noble/secp256k1': 1.7.1
@@ -7533,6 +7670,73 @@ snapshots:
       multiformats: 9.9.0
       one-webcrypto: 1.0.3
       uint8arrays: 3.0.0
+
+  '@atproto/crypto@0.3.0':
+    dependencies:
+      '@noble/curves': 1.4.0
+      '@noble/hashes': 1.4.0
+      uint8arrays: 3.0.0
+
+  '@atproto/crypto@0.4.1':
+    dependencies:
+      '@noble/curves': 1.4.0
+      '@noble/hashes': 1.4.0
+      uint8arrays: 3.0.0
+
+  '@atproto/identity@0.4.1':
+    dependencies:
+      '@atproto/common-web': 0.3.0
+      '@atproto/crypto': 0.4.1
+      axios: 0.27.2
+    transitivePeerDependencies:
+      - debug
+
+  '@atproto/jwk-jose@0.1.2':
+    dependencies:
+      '@atproto/jwk': 0.1.1
+      jose: 5.3.0
+
+  '@atproto/jwk@0.1.1':
+    dependencies:
+      multiformats: 9.9.0
+      zod: 3.23.8
+
+  '@atproto/lexicon@0.4.1':
+    dependencies:
+      '@atproto/common-web': 0.3.0
+      '@atproto/syntax': 0.3.0
+      iso-datestring-validator: 2.2.2
+      multiformats: 9.9.0
+      zod: 3.23.8
+
+  '@atproto/oauth-provider@0.2.1':
+    dependencies:
+      '@atproto-labs/fetch': 0.1.0
+      '@atproto-labs/fetch-node': 0.1.0
+      '@atproto-labs/pipe': 0.1.0
+      '@atproto-labs/simple-store': 0.1.1
+      '@atproto-labs/simple-store-memory': 0.1.1
+      '@atproto/jwk': 0.1.1
+      '@atproto/jwk-jose': 0.1.2
+      '@atproto/oauth-types': 0.1.4
+      '@hapi/accept': 6.0.3
+      '@hapi/bourne': 3.0.0
+      '@hapi/content': 6.0.0
+      cookie: 0.6.0
+      http-errors: 2.0.0
+      jose: 5.3.0
+      psl: 1.9.0
+      zod: 3.23.8
+    optionalDependencies:
+      ioredis: 5.3.2
+      keygrip: 1.1.0
+    transitivePeerDependencies:
+      - supports-color
+
+  '@atproto/oauth-types@0.1.4':
+    dependencies:
+      '@atproto/jwk': 0.1.1
+      zod: 3.23.8
 
   '@atproto/pds@0.3.0-entryway.3':
     dependencies:
@@ -7548,7 +7752,7 @@ snapshots:
       '@atproto/xrpc-server': link:packages/xrpc-server
       '@bufbuild/protobuf': 1.6.0
       '@connectrpc/connect': 1.3.0(@bufbuild/protobuf@1.6.0)
-      '@connectrpc/connect-node': 1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0)
+      '@connectrpc/connect-node': 1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0))
       '@did-plc/lib': 0.0.1
       better-sqlite3: 9.4.5
       bytes: 3.1.2
@@ -7583,6 +7787,44 @@ snapshots:
       - debug
       - pg-native
       - supports-color
+
+  '@atproto/repo@0.5.1':
+    dependencies:
+      '@atproto/common': 0.4.2
+      '@atproto/common-web': 0.3.0
+      '@atproto/crypto': 0.4.1
+      '@atproto/lexicon': 0.4.1
+      '@ipld/car': 3.2.3
+      '@ipld/dag-cbor': 7.0.3
+      multiformats: 9.9.0
+      uint8arrays: 3.0.0
+      zod: 3.23.8
+
+  '@atproto/syntax@0.3.0': {}
+
+  '@atproto/xrpc-server@0.6.4':
+    dependencies:
+      '@atproto/common': 0.4.2
+      '@atproto/crypto': 0.4.1
+      '@atproto/lexicon': 0.4.1
+      '@atproto/xrpc': 0.6.2
+      cbor-x: 1.5.1
+      express: 4.18.2
+      http-errors: 2.0.0
+      mime-types: 2.1.35
+      rate-limiter-flexible: 2.4.1
+      uint8arrays: 3.0.0
+      ws: 8.17.1
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  '@atproto/xrpc@0.6.2':
+    dependencies:
+      '@atproto/lexicon': 0.4.1
+      zod: 3.23.8
 
   '@aws-crypto/crc32@2.0.0':
     dependencies:
@@ -9524,8 +9766,9 @@ snapshots:
 
   '@bufbuild/protoc-gen-es@1.6.0(@bufbuild/protobuf@1.6.0)':
     dependencies:
-      '@bufbuild/protobuf': 1.6.0
       '@bufbuild/protoplugin': 1.6.0
+    optionalDependencies:
+      '@bufbuild/protobuf': 1.6.0
     transitivePeerDependencies:
       - supports-color
 
@@ -9584,9 +9827,9 @@ snapshots:
     dependencies:
       '@changesets/types': 5.2.1
 
-  '@changesets/changelog-github@0.4.8':
+  '@changesets/changelog-github@0.4.8(encoding@0.1.13)':
     dependencies:
-      '@changesets/get-github-info': 0.5.2
+      '@changesets/get-github-info': 0.5.2(encoding@0.1.13)
       '@changesets/types': 5.2.1
       dotenv: 8.6.0
     transitivePeerDependencies:
@@ -9650,10 +9893,10 @@ snapshots:
       fs-extra: 7.0.1
       semver: 7.5.4
 
-  '@changesets/get-github-info@0.5.2':
+  '@changesets/get-github-info@0.5.2(encoding@0.1.13)':
     dependencies:
       dataloader: 1.4.0
-      node-fetch: 2.7.0
+      node-fetch: 2.7.0(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
 
@@ -9719,14 +9962,14 @@ snapshots:
       human-id: 1.0.2
       prettier: 2.7.1
 
-  '@connectrpc/connect-express@1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect-node@1.3.0)(@connectrpc/connect@1.3.0)':
+  '@connectrpc/connect-express@1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect-node@1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0)))(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0))':
     dependencies:
       '@bufbuild/protobuf': 1.6.0
       '@connectrpc/connect': 1.3.0(@bufbuild/protobuf@1.6.0)
-      '@connectrpc/connect-node': 1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0)
+      '@connectrpc/connect-node': 1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0))
       '@types/express': 4.17.21
 
-  '@connectrpc/connect-node@1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0)':
+  '@connectrpc/connect-node@1.3.0(@bufbuild/protobuf@1.6.0)(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0))':
     dependencies:
       '@bufbuild/protobuf': 1.6.0
       '@connectrpc/connect': 1.3.0(@bufbuild/protobuf@1.6.0)
@@ -9736,14 +9979,88 @@ snapshots:
     dependencies:
       '@bufbuild/protobuf': 1.6.0
 
-  '@connectrpc/protoc-gen-connect-es@1.3.0(@bufbuild/protoc-gen-es@1.6.0)(@connectrpc/connect@1.3.0)':
+  '@connectrpc/protoc-gen-connect-es@1.3.0(@bufbuild/protoc-gen-es@1.6.0(@bufbuild/protobuf@1.6.0))(@connectrpc/connect@1.3.0(@bufbuild/protobuf@1.6.0))':
     dependencies:
       '@bufbuild/protobuf': 1.6.0
-      '@bufbuild/protoc-gen-es': 1.6.0(@bufbuild/protobuf@1.6.0)
       '@bufbuild/protoplugin': 1.6.0
+    optionalDependencies:
+      '@bufbuild/protoc-gen-es': 1.6.0(@bufbuild/protobuf@1.6.0)
       '@connectrpc/connect': 1.3.0(@bufbuild/protobuf@1.6.0)
     transitivePeerDependencies:
       - supports-color
+
+  '@cproto/api@0.14.0':
+    dependencies:
+      '@atproto/common-web': 0.3.0
+      '@atproto/lexicon': 0.4.1
+      '@atproto/syntax': 0.3.0
+      '@atproto/xrpc': 0.6.2
+      await-lock: 2.2.2
+      multiformats: 9.9.0
+      tlds: 1.234.0
+
+  '@cproto/did-plc-lib@0.0.5':
+    dependencies:
+      '@atproto/common': 0.3.0
+      '@atproto/crypto': 0.3.0
+      '@ipld/dag-cbor': 7.0.3
+      axios: 1.6.7
+      multiformats: 9.9.0
+      uint8arrays: 3.0.0
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - debug
+
+  '@cproto/pds@0.5.1(@aws-sdk/abort-controller@3.374.0)(typescript@5.4.4)':
+    dependencies:
+      '@atproto-labs/fetch-node': 0.1.0
+      '@atproto/api': '@cproto/api@0.14.0'
+      '@atproto/aws': 0.2.5(@aws-sdk/abort-controller@3.374.0)
+      '@atproto/common': 0.4.2
+      '@atproto/crypto': 0.4.1
+      '@atproto/identity': 0.4.1
+      '@atproto/lexicon': 0.4.1
+      '@atproto/oauth-provider': 0.2.1
+      '@atproto/repo': 0.5.1
+      '@atproto/syntax': 0.3.0
+      '@atproto/xrpc': 0.6.2
+      '@atproto/xrpc-server': 0.6.4
+      '@did-plc/lib': 0.0.4
+      better-sqlite3: 10.0.0
+      bytes: 3.1.2
+      compression: 1.7.4
+      cors: 2.8.5
+      disposable-email: 0.2.3
+      express: 4.18.2
+      express-async-errors: 3.1.1(express@4.18.2)
+      file-type: 16.5.4
+      glob: 10.3.10
+      handlebars: 4.7.8
+      http-terminator: 3.2.0
+      ioredis: 5.3.2
+      jose: 5.3.0
+      key-encoder: 2.0.3
+      kysely: 0.22.0
+      multiformats: 9.9.0
+      nodemailer: 6.8.0
+      nodemailer-html-to-text: 3.2.0
+      p-queue: 6.6.2
+      pino: 8.21.0
+      pino-http: 8.6.1
+      sharp: 0.32.6
+      typed-emitter: 2.1.0
+      uint8arrays: 3.0.0
+      viem: 2.20.1(typescript@5.4.4)(zod@3.23.8)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@aws-sdk/abort-controller'
+      - '@aws-sdk/signature-v4-crt'
+      - aws-crt
+      - bufferutil
+      - debug
+      - supports-color
+      - typescript
+      - utf-8-validate
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -9947,7 +10264,7 @@ snapshots:
       jest-util: 28.1.3
       slash: 3.0.0
 
-  '@jest/core@28.1.3(ts-node@10.8.2)':
+  '@jest/core@28.1.3(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3))':
     dependencies:
       '@jest/console': 28.1.3
       '@jest/reporters': 28.1.3
@@ -9961,7 +10278,42 @@ snapshots:
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 28.1.3
-      jest-config: 28.1.3(@types/node@18.19.24)(ts-node@10.8.2)
+      jest-config: 28.1.3(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3))
+      jest-haste-map: 28.1.3
+      jest-message-util: 28.1.3
+      jest-regex-util: 28.0.2
+      jest-resolve: 28.1.3
+      jest-resolve-dependencies: 28.1.3
+      jest-runner: 28.1.3
+      jest-runtime: 28.1.3
+      jest-snapshot: 28.1.3
+      jest-util: 28.1.3
+      jest-validate: 28.1.3
+      jest-watcher: 28.1.3
+      micromatch: 4.0.5
+      pretty-format: 28.1.3
+      rimraf: 3.0.2
+      slash: 3.0.0
+      strip-ansi: 6.0.1
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+
+  '@jest/core@28.1.3(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))':
+    dependencies:
+      '@jest/console': 28.1.3
+      '@jest/reporters': 28.1.3
+      '@jest/test-result': 28.1.3
+      '@jest/transform': 28.1.3
+      '@jest/types': 28.1.3
+      '@types/node': 18.19.24
+      ansi-escapes: 4.3.2
+      chalk: 4.1.2
+      ci-info: 3.8.0
+      exit: 0.1.2
+      graceful-fs: 4.2.11
+      jest-changed-files: 28.1.3
+      jest-config: 28.1.3(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       jest-haste-map: 28.1.3
       jest-message-util: 28.1.3
       jest-regex-util: 28.0.2
@@ -10206,8 +10558,6 @@ snapshots:
 
   '@opentelemetry/api@1.7.0': {}
 
-  '@opentelemetry/api@1.8.0': {}
-
   '@opentelemetry/core@1.18.1(@opentelemetry/api@1.7.0)':
     dependencies:
       '@opentelemetry/api': 1.7.0
@@ -10224,9 +10574,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation@0.45.1(@opentelemetry/api@1.8.0)':
+  '@opentelemetry/instrumentation@0.45.1(@opentelemetry/api@1.7.0)':
     dependencies:
-      '@opentelemetry/api': 1.8.0
+      '@opentelemetry/api': 1.7.0
       '@types/shimmer': 1.0.5
       import-in-the-middle: 1.4.2
       require-in-the-middle: 7.2.0
@@ -10273,6 +10623,7 @@ snapshots:
       glob: 8.1.0
       is-reference: 1.2.1
       magic-string: 0.30.10
+    optionalDependencies:
       rollup: 4.18.0
 
   '@rollup/plugin-dynamic-import-vars@2.1.2(rollup@4.18.0)':
@@ -10282,15 +10633,17 @@ snapshots:
       estree-walker: 2.0.2
       fast-glob: 3.3.1
       magic-string: 0.30.10
+    optionalDependencies:
       rollup: 4.18.0
 
   '@rollup/plugin-html@1.0.3(rollup@4.18.0)':
-    dependencies:
+    optionalDependencies:
       rollup: 4.18.0
 
   '@rollup/plugin-json@6.1.0(rollup@4.18.0)':
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
+    optionalDependencies:
       rollup: 4.18.0
 
   '@rollup/plugin-node-resolve@15.2.3(rollup@4.18.0)':
@@ -10301,33 +10654,39 @@ snapshots:
       is-builtin-module: 3.2.1
       is-module: 1.0.0
       resolve: 1.22.4
+    optionalDependencies:
       rollup: 4.18.0
 
   '@rollup/plugin-replace@5.0.5(rollup@4.18.0)':
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
       magic-string: 0.30.10
+    optionalDependencies:
       rollup: 4.18.0
 
   '@rollup/plugin-terser@0.4.4(rollup@4.18.0)':
     dependencies:
-      rollup: 4.18.0
       serialize-javascript: 6.0.2
       smob: 1.5.0
       terser: 5.31.0
+    optionalDependencies:
+      rollup: 4.18.0
 
-  '@rollup/plugin-typescript@11.1.6(rollup@4.18.0)(typescript@5.4.4)':
+  '@rollup/plugin-typescript@11.1.6(rollup@4.18.0)(tslib@2.6.2)(typescript@5.4.4)':
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
       resolve: 1.22.4
-      rollup: 4.18.0
       typescript: 5.4.4
+    optionalDependencies:
+      rollup: 4.18.0
+      tslib: 2.6.2
 
   '@rollup/pluginutils@5.1.0(rollup@4.18.0)':
     dependencies:
       '@types/estree': 1.0.5
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    optionalDependencies:
       rollup: 4.18.0
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
@@ -10659,7 +11018,7 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.0
 
-  '@typescript-eslint/eslint-plugin@7.4.0(@typescript-eslint/parser@7.4.0)(eslint@8.57.0)(typescript@5.4.4)':
+  '@typescript-eslint/eslint-plugin@7.4.0(@typescript-eslint/parser@7.4.0(eslint@8.57.0)(typescript@5.4.4))(eslint@8.57.0)(typescript@5.4.4)':
     dependencies:
       '@eslint-community/regexpp': 4.10.0
       '@typescript-eslint/parser': 7.4.0(eslint@8.57.0)(typescript@5.4.4)
@@ -10674,6 +11033,7 @@ snapshots:
       natural-compare: 1.4.0
       semver: 7.5.4
       ts-api-utils: 1.0.3(typescript@5.4.4)
+    optionalDependencies:
       typescript: 5.4.4
     transitivePeerDependencies:
       - supports-color
@@ -10686,6 +11046,7 @@ snapshots:
       '@typescript-eslint/visitor-keys': 7.4.0
       debug: 4.3.4
       eslint: 8.57.0
+    optionalDependencies:
       typescript: 5.4.4
     transitivePeerDependencies:
       - supports-color
@@ -10702,6 +11063,7 @@ snapshots:
       debug: 4.3.4
       eslint: 8.57.0
       ts-api-utils: 1.0.3(typescript@5.4.4)
+    optionalDependencies:
       typescript: 5.4.4
     transitivePeerDependencies:
       - supports-color
@@ -10718,6 +11080,7 @@ snapshots:
       minimatch: 9.0.3
       semver: 7.5.4
       ts-api-utils: 1.0.3(typescript@5.4.4)
+    optionalDependencies:
       typescript: 5.4.4
     transitivePeerDependencies:
       - supports-color
@@ -10762,7 +11125,7 @@ snapshots:
   abbrev@1.1.1: {}
 
   abitype@1.0.5(typescript@5.4.4)(zod@3.23.8):
-    dependencies:
+    optionalDependencies:
       typescript: 5.4.4
       zod: 3.23.8
 
@@ -10803,7 +11166,7 @@ snapshots:
       indent-string: 4.0.0
 
   ajv-formats@2.1.1(ajv@8.12.0):
-    dependencies:
+    optionalDependencies:
       ajv: 8.12.0
 
   ajv@6.12.6:
@@ -11826,13 +12189,14 @@ snapshots:
     dependencies:
       eslint: 8.57.0
 
-  eslint-plugin-prettier@5.1.3(eslint-config-prettier@9.1.0)(eslint@8.57.0)(prettier@3.2.5):
+  eslint-plugin-prettier@5.1.3(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5):
     dependencies:
       eslint: 8.57.0
-      eslint-config-prettier: 9.1.0(eslint@8.57.0)
       prettier: 3.2.5
       prettier-linter-helpers: 1.0.0
       synckit: 0.8.8
+    optionalDependencies:
+      eslint-config-prettier: 9.1.0(eslint@8.57.0)
 
   eslint-scope@7.2.2:
     dependencies:
@@ -12656,16 +13020,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  jest-cli@28.1.3(@types/node@18.19.24)(ts-node@10.8.2):
+  jest-cli@28.1.3(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3)):
     dependencies:
-      '@jest/core': 28.1.3(ts-node@10.8.2)
+      '@jest/core': 28.1.3(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3))
       '@jest/test-result': 28.1.3
       '@jest/types': 28.1.3
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.11
       import-local: 3.1.0
-      jest-config: 28.1.3(@types/node@18.19.24)(ts-node@10.8.2)
+      jest-config: 28.1.3(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3))
       jest-util: 28.1.3
       jest-validate: 28.1.3
       prompts: 2.4.2
@@ -12675,12 +13039,30 @@ snapshots:
       - supports-color
       - ts-node
 
-  jest-config@28.1.3(@types/node@18.19.24)(ts-node@10.8.2):
+  jest-cli@28.1.3(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)):
+    dependencies:
+      '@jest/core': 28.1.3(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
+      '@jest/test-result': 28.1.3
+      '@jest/types': 28.1.3
+      chalk: 4.1.2
+      exit: 0.1.2
+      graceful-fs: 4.2.11
+      import-local: 3.1.0
+      jest-config: 28.1.3(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
+      jest-util: 28.1.3
+      jest-validate: 28.1.3
+      prompts: 2.4.2
+      yargs: 17.7.2
+    transitivePeerDependencies:
+      - '@types/node'
+      - supports-color
+      - ts-node
+
+  jest-config@28.1.3(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3)):
     dependencies:
       '@babel/core': 7.18.6
       '@jest/test-sequencer': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.19.24
       babel-jest: 28.1.3(@babel/core@7.18.6)
       chalk: 4.1.2
       ci-info: 3.8.0
@@ -12700,6 +13082,38 @@ snapshots:
       pretty-format: 28.1.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 18.19.24
+      ts-node: 10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3)
+    transitivePeerDependencies:
+      - supports-color
+
+  jest-config@28.1.3(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)):
+    dependencies:
+      '@babel/core': 7.18.6
+      '@jest/test-sequencer': 28.1.3
+      '@jest/types': 28.1.3
+      babel-jest: 28.1.3(@babel/core@7.18.6)
+      chalk: 4.1.2
+      ci-info: 3.8.0
+      deepmerge: 4.3.1
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      jest-circus: 28.1.3
+      jest-environment-node: 28.1.3
+      jest-get-type: 28.0.2
+      jest-regex-util: 28.0.2
+      jest-resolve: 28.1.3
+      jest-runner: 28.1.3
+      jest-util: 28.1.3
+      jest-validate: 28.1.3
+      micromatch: 4.0.5
+      parse-json: 5.2.0
+      pretty-format: 28.1.3
+      slash: 3.0.0
+      strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 18.19.24
       ts-node: 10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)
     transitivePeerDependencies:
       - supports-color
@@ -12784,7 +13198,7 @@ snapshots:
       '@types/node': 18.19.24
 
   jest-pnp-resolver@1.2.3(jest-resolve@28.1.3):
-    dependencies:
+    optionalDependencies:
       jest-resolve: 28.1.3
 
   jest-regex-util@28.0.2: {}
@@ -12924,12 +13338,23 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  jest@28.1.2(@types/node@18.19.24)(ts-node@10.8.2):
+  jest@28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3)):
     dependencies:
-      '@jest/core': 28.1.3(ts-node@10.8.2)
+      '@jest/core': 28.1.3(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3))
       '@jest/types': 28.1.3
       import-local: 3.1.0
-      jest-cli: 28.1.3(@types/node@18.19.24)(ts-node@10.8.2)
+      jest-cli: 28.1.3(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3))
+    transitivePeerDependencies:
+      - '@types/node'
+      - supports-color
+      - ts-node
+
+  jest@28.1.2(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)):
+    dependencies:
+      '@jest/core': 28.1.3(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
+      '@jest/types': 28.1.3
+      import-local: 3.1.0
+      jest-cli: 28.1.3(@types/node@18.19.24)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
     transitivePeerDependencies:
       - '@types/node'
       - supports-color
@@ -13314,9 +13739,11 @@ snapshots:
 
   node-addon-api@6.1.0: {}
 
-  node-fetch@2.7.0:
+  node-fetch@2.7.0(encoding@0.1.13):
     dependencies:
       whatwg-url: 5.0.0
+    optionalDependencies:
+      encoding: 0.1.13
 
   node-gyp-build-optional-packages@5.1.1:
     dependencies:
@@ -13422,13 +13849,13 @@ snapshots:
 
   opener@1.5.2: {}
 
-  opentelemetry-plugin-better-sqlite3@1.1.0(better-sqlite3@9.4.5):
+  opentelemetry-plugin-better-sqlite3@1.1.0(better-sqlite3@10.0.0):
     dependencies:
       '@opentelemetry/api': 1.7.0
       '@opentelemetry/core': 1.18.1(@opentelemetry/api@1.7.0)
       '@opentelemetry/instrumentation': 0.44.0(@opentelemetry/api@1.7.0)
       '@opentelemetry/semantic-conventions': 1.18.1
-      better-sqlite3: 9.4.5
+      better-sqlite3: 10.0.0
     transitivePeerDependencies:
       - supports-color
 
@@ -13674,17 +14101,21 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.4.38
 
-  postcss-load-config@3.1.4(postcss@8.4.38):
+  postcss-load-config@3.1.4(postcss@8.4.38)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)):
     dependencies:
       lilconfig: 2.1.0
-      postcss: 8.4.38
       yaml: 1.10.2
+    optionalDependencies:
+      postcss: 8.4.38
+      ts-node: 10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)
 
-  postcss-load-config@4.0.2(postcss@8.4.38):
+  postcss-load-config@4.0.2(postcss@8.4.38)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)):
     dependencies:
       lilconfig: 3.1.1
-      postcss: 8.4.38
       yaml: 2.4.2
+    optionalDependencies:
+      postcss: 8.4.38
+      ts-node: 10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)
 
   postcss-merge-longhand@5.1.7(postcss@8.4.38):
     dependencies:
@@ -14140,7 +14571,7 @@ snapshots:
       safe-stable-stringify: 2.4.3
       semver-compare: 1.0.0
 
-  rollup-plugin-postcss@4.0.2(postcss@8.4.38):
+  rollup-plugin-postcss@4.0.2(postcss@8.4.38)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)):
     dependencies:
       chalk: 4.1.2
       concat-with-sourcemaps: 1.1.0
@@ -14149,7 +14580,7 @@ snapshots:
       p-queue: 6.6.2
       pify: 5.0.0
       postcss: 8.4.38
-      postcss-load-config: 3.1.4(postcss@8.4.38)
+      postcss-load-config: 3.1.4(postcss@8.4.38)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       postcss-modules: 4.3.1(postcss@8.4.38)
       promise.series: 0.2.0
       resolve: 1.22.4
@@ -14421,10 +14852,10 @@ snapshots:
 
   standard-as-callback@2.1.0: {}
 
-  statsig-node@5.23.1:
+  statsig-node@5.23.1(encoding@0.1.13):
     dependencies:
       ip3country: 5.0.0
-      node-fetch: 2.7.0
+      node-fetch: 2.7.0(encoding@0.1.13)
       ua-parser-js: 1.0.38
       uuid: 8.3.2
     transitivePeerDependencies:
@@ -14570,7 +15001,7 @@ snapshots:
       '@pkgr/core': 0.1.1
       tslib: 2.6.2
 
-  tailwindcss@3.4.3:
+  tailwindcss@3.4.3(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -14589,7 +15020,7 @@ snapshots:
       postcss: 8.4.38
       postcss-import: 15.1.0(postcss@8.4.38)
       postcss-js: 4.0.1(postcss@8.4.38)
-      postcss-load-config: 4.0.2(postcss@8.4.38)
+      postcss-load-config: 4.0.2(postcss@8.4.38)(ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4))
       postcss-nested: 6.0.1(postcss@8.4.38)
       postcss-selector-parser: 6.1.0
       resolve: 1.22.4
@@ -14707,10 +15138,30 @@ snapshots:
       '@ts-morph/common': 0.17.0
       code-block-writer: 11.0.3
 
+  ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.3.3):
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.9
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.4
+      '@types/node': 18.19.24
+      acorn: 8.10.0
+      acorn-walk: 8.2.0
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.3.3
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    optionalDependencies:
+      '@swc/core': 1.3.42
+    optional: true
+
   ts-node@10.8.2(@swc/core@1.3.42)(@types/node@18.19.24)(typescript@5.4.4):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
-      '@swc/core': 1.3.42
       '@tsconfig/node10': 1.0.9
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
@@ -14725,6 +15176,8 @@ snapshots:
       typescript: 5.4.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
+    optionalDependencies:
+      '@swc/core': 1.3.42
 
   tslib@1.14.1: {}
 
@@ -14910,9 +15363,10 @@ snapshots:
       '@scure/bip39': 1.3.0
       abitype: 1.0.5(typescript@5.4.4)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1)
-      typescript: 5.4.4
       webauthn-p256: 0.0.5
       ws: 8.17.1
+    optionalDependencies:
+      typescript: 5.4.4
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
