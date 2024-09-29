@@ -2424,7 +2424,7 @@ export const schemaDict = {
           encoding: 'application/json',
           schema: {
             type: 'object',
-            required: ['identifier', 'siweSignature'],
+            required: ['identifier'],
             properties: {
               identifier: {
                 type: 'string',

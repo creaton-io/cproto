@@ -293,10 +293,12 @@ export class AccountManager
 
   async login({
     identifier,
-    siweSignature
+    siweSignature,
+    password
   }: {
     identifier: string
-    siweSignature: string
+    siweSignature?: string | undefined,
+    password?: string | undefined
   }): Promise<{
     user: ActorAccount
     appPassword: password.AppPassDescript | null
@@ -323,13 +325,17 @@ export class AccountManager
       }
 
       let appPassword: password.AppPassDescript | null = null
-      const validAccountPass = password ? await this.verifySIWE(
+      const validAccountPass = siweSignature ? await this.verifySIWE(
         user.did,
         siweSignature as `0x${string}`
-      ) : await this.verifyAccountPassword(
+      ) : password ? await this.verifyAccountPassword(
         user.did,
         password,
-      )
+      ) : false
+      // const validAccountPass = await this.verifyAccountPassword(
+      //   user.did,
+      //   password,
+      // )
       if (!validAccountPass) {
         throw new AuthRequiredError('Wrong signature/App passwords are not allowed')
       }
