@@ -16,6 +16,7 @@ import {
   NotFoundPost,
   PostView,
   ReasonRepost,
+  ReasonPin,
   ReplyRef,
   ThreadViewPost,
   ThreadgateView,
@@ -34,7 +35,7 @@ import {
   VideoUriBuilder,
   parsePostgate,
 } from './util'
-import { uriToDid as creatorFromUri } from '../util/uris'
+import { uriToDid as creatorFromUri, safePinnedPost } from '../util/uris'
 import { isListRule } from '../lexicon/types/app/bsky/feed/threadgate'
 import { isSelfLabels } from '../lexicon/types/com/atproto/label/defs'
 import {
@@ -74,9 +75,15 @@ import { Notification } from '../proto/bsky_pb'
 import { postUriToThreadgateUri, postUriToPostgateUri } from '../util/uris'
 
 export class Views {
+  public imgUriBuilder: ImageUriBuilder = this.opts.imgUriBuilder
+  public videoUriBuilder: VideoUriBuilder = this.opts.videoUriBuilder
+  public indexedAtEpoch: Date | undefined = this.opts.indexedAtEpoch
   constructor(
-    public imgUriBuilder: ImageUriBuilder,
-    public videoUriBuilder: VideoUriBuilder,
+    private opts: {
+      imgUriBuilder: ImageUriBuilder
+      videoUriBuilder: VideoUriBuilder
+      indexedAtEpoch: Date | undefined
+    },
   ) {}
 
   // Actor
@@ -169,6 +176,7 @@ export class Views {
       joinedViaStarterPack: actor.profile?.joinedViaStarterPack
         ? this.starterPackBasic(actor.profile.joinedViaStarterPack.uri, state)
         : undefined,
+      pinnedPost: safePinnedPost(actor.profile?.pinnedPost),
     }
   }
 
@@ -180,7 +188,13 @@ export class Views {
     return {
       ...basicView,
       description: actor.profile?.description || undefined,
-      indexedAt: actor.sortedAt?.toISOString(),
+      indexedAt:
+        actor.indexedAt && actor.sortedAt
+          ? this.indexedAt({
+              sortedAt: actor.sortedAt,
+              indexedAt: actor.indexedAt,
+            }).toISOString()
+          : undefined,
     }
   }
 
@@ -328,7 +342,7 @@ export class Views {
       creator,
       description: list.record.description,
       descriptionFacets: list.record.descriptionFacets,
-      indexedAt: list.sortedAt.toISOString(),
+      indexedAt: this.indexedAt(list).toISOString(),
     }
   }
 
@@ -354,7 +368,7 @@ export class Views {
           )
         : undefined,
       listItemCount: listAgg?.listItems ?? 0,
-      indexedAt: list.sortedAt.toISOString(),
+      indexedAt: this.indexedAt(list).toISOString(),
       labels,
       viewer: listViewer
         ? {
@@ -384,7 +398,7 @@ export class Views {
       joinedAllTimeCount: agg?.joinedAllTime ?? 0,
       joinedWeekCount: agg?.joinedWeek ?? 0,
       labels,
-      indexedAt: sp.sortedAt.toISOString(),
+      indexedAt: this.indexedAt(sp).toISOString(),
     }
   }
 
@@ -461,7 +475,7 @@ export class Views {
             like: viewer.like,
           }
         : undefined,
-      indexedAt: labeler.sortedAt.toISOString(),
+      indexedAt: this.indexedAt(labeler).toISOString(),
       labels,
     }
   }
@@ -549,7 +563,7 @@ export class Views {
             like: viewer.like,
           }
         : undefined,
-      indexedAt: feedgen.sortedAt.toISOString(),
+      indexedAt: this.indexedAt(feedgen).toISOString(),
     }
   }
 
@@ -598,7 +612,7 @@ export class Views {
       repostCount: aggs?.reposts ?? 0,
       likeCount: aggs?.likes ?? 0,
       quoteCount: aggs?.quotes ?? 0,
-      indexedAt: post.sortedAt.toISOString(),
+      indexedAt: this.indexedAt(post).toISOString(),
       viewer: viewer
         ? {
             repost: viewer.repost,
@@ -606,6 +620,7 @@ export class Views {
             threadMuted: viewer.threadMuted,
             replyDisabled: this.userReplyDisabled(uri, state),
             embeddingDisabled: this.userPostEmbeddingDisabled(uri, state),
+            pinned: this.viewerPinned(uri, state, authorDid),
           }
         : undefined,
       labels,
@@ -620,8 +635,10 @@ export class Views {
     state: HydrationState,
   ): FeedViewPost | undefined {
     const postInfo = state.posts?.get(item.post.uri)
-    let reason: ReasonRepost | undefined
-    if (item.repost) {
+    let reason: ReasonRepost | ReasonPin | undefined
+    if (item.authorPinned) {
+      reason = this.reasonPin()
+    } else if (item.repost) {
       const repost = state.reposts?.get(item.repost.uri)
       if (!repost) return
       if (repost.record.subject.uri !== item.post.uri) return
@@ -719,7 +736,13 @@ export class Views {
     return {
       $type: 'app.bsky.feed.defs#reasonRepost',
       by: creator,
-      indexedAt: repost.sortedAt.toISOString(),
+      indexedAt: this.indexedAt(repost).toISOString(),
+    }
+  }
+
+  reasonPin() {
+    return {
+      $type: 'app.bsky.feed.defs#reasonPin',
     }
   }
 
@@ -1128,6 +1151,15 @@ export class Views {
     return true
   }
 
+  viewerPinned(uri: string, state: HydrationState, authorDid: string) {
+    if (!state.ctx?.viewer || state.ctx.viewer !== authorDid) return
+    const actor = state.actors?.get(authorDid)
+    if (!actor) return
+    const pinnedPost = safePinnedPost(actor.profile?.pinnedPost)
+    if (!pinnedPost) return undefined
+    return pinnedPost.uri === uri
+  }
+
   notification(
     notif: Notification,
     lastSeenAt: string | undefined,
@@ -1150,11 +1182,12 @@ export class Views {
     } else if (uri.collection === ids.AppBskyActorProfile) {
       const actor = state.actors?.get(authorDid)
       recordInfo =
-        actor && actor.profile && actor.profileCid && actor.sortedAt
+        actor && actor.profile && actor.profileCid
           ? {
               record: actor.profile,
               cid: actor.profileCid,
-              sortedAt: actor.sortedAt,
+              sortedAt: actor.sortedAt ?? new Date(0), // @NOTE will be present since profile record is present
+              indexedAt: actor.indexedAt ?? new Date(0), // @NOTE will be present since profile record is present
               takedownRef: actor.profileTakedownRef,
             }
           : null
@@ -1181,6 +1214,11 @@ export class Views {
       indexedAt: notif.timestamp.toDate().toISOString(),
       labels: [...labels, ...selfLabels],
     }
+  }
+
+  indexedAt({ sortedAt, indexedAt }: { sortedAt: Date; indexedAt: Date }) {
+    if (!this.indexedAtEpoch) return sortedAt
+    return indexedAt && indexedAt > this.indexedAtEpoch ? indexedAt : sortedAt
   }
 }
 

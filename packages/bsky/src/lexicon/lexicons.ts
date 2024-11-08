@@ -70,6 +70,13 @@ export const schemaDict = {
             type: 'string',
             format: 'datetime',
           },
+          threatSignatures: {
+            type: 'array',
+            items: {
+              type: 'ref',
+              ref: 'lex:com.atproto.admin.defs#threatSignature',
+            },
+          },
         },
       },
       repoRef: {
@@ -97,6 +104,18 @@ export const schemaDict = {
           recordUri: {
             type: 'string',
             format: 'at-uri',
+          },
+        },
+      },
+      threatSignature: {
+        type: 'object',
+        required: ['property', 'value'],
+        properties: {
+          property: {
+            type: 'string',
+          },
+          value: {
+            type: 'string',
           },
         },
       },
@@ -1322,7 +1341,7 @@ export const schemaDict = {
           },
           rkey: {
             type: 'string',
-            maxLength: 15,
+            maxLength: 512,
           },
           value: {
             type: 'unknown',
@@ -1431,7 +1450,7 @@ export const schemaDict = {
               rkey: {
                 type: 'string',
                 description: 'The Record Key.',
-                maxLength: 15,
+                maxLength: 512,
               },
               validate: {
                 type: 'boolean',
@@ -1686,6 +1705,11 @@ export const schemaDict = {
             },
           },
         },
+        errors: [
+          {
+            name: 'RecordNotFound',
+          },
+        ],
       },
     },
   },
@@ -1877,7 +1901,7 @@ export const schemaDict = {
               rkey: {
                 type: 'string',
                 description: 'The Record Key.',
-                maxLength: 15,
+                maxLength: 512,
               },
               validate: {
                 type: 'boolean',
@@ -4190,6 +4214,10 @@ export const schemaDict = {
               ref: 'lex:com.atproto.label.defs#label',
             },
           },
+          pinnedPost: {
+            type: 'ref',
+            ref: 'lex:com.atproto.repo.strongRef',
+          },
         },
       },
       profileAssociated: {
@@ -4572,6 +4600,15 @@ export const schemaDict = {
               maxLength: 100,
             },
           },
+          nuxs: {
+            description: 'Storage for NUXs the user has encountered.',
+            type: 'array',
+            maxLength: 100,
+            items: {
+              type: 'ref',
+              ref: 'lex:app.bsky.actor.defs#nux',
+            },
+          },
         },
       },
       bskyAppProgressGuide: {
@@ -4583,6 +4620,34 @@ export const schemaDict = {
           guide: {
             type: 'string',
             maxLength: 100,
+          },
+        },
+      },
+      nux: {
+        type: 'object',
+        description: 'A new user experiences (NUX) storage object',
+        required: ['id', 'completed'],
+        properties: {
+          id: {
+            type: 'string',
+            maxLength: 100,
+          },
+          completed: {
+            type: 'boolean',
+            default: false,
+          },
+          data: {
+            description:
+              'Arbitrary data for the NUX. The structure is defined by the NUX itself. Limited to 300 characters.',
+            type: 'string',
+            maxLength: 3000,
+            maxGraphemes: 300,
+          },
+          expiresAt: {
+            type: 'string',
+            format: 'datetime',
+            description:
+              'The date and time at which the NUX will expire and should be considered completed.',
           },
         },
       },
@@ -4772,6 +4837,10 @@ export const schemaDict = {
               refs: ['lex:com.atproto.label.defs#selfLabels'],
             },
             joinedViaStarterPack: {
+              type: 'ref',
+              ref: 'lex:com.atproto.repo.strongRef',
+            },
+            pinnedPost: {
               type: 'ref',
               ref: 'lex:com.atproto.repo.strongRef',
             },
@@ -5431,6 +5500,9 @@ export const schemaDict = {
           embeddingDisabled: {
             type: 'boolean',
           },
+          pinned: {
+            type: 'boolean',
+          },
         },
       },
       feedViewPost: {
@@ -5447,7 +5519,10 @@ export const schemaDict = {
           },
           reason: {
             type: 'union',
-            refs: ['lex:app.bsky.feed.defs#reasonRepost'],
+            refs: [
+              'lex:app.bsky.feed.defs#reasonRepost',
+              'lex:app.bsky.feed.defs#reasonPin',
+            ],
           },
           feedContext: {
             type: 'string',
@@ -5498,6 +5573,10 @@ export const schemaDict = {
             format: 'datetime',
           },
         },
+      },
+      reasonPin: {
+        type: 'object',
+        properties: {},
       },
       threadViewPost: {
         type: 'object',
@@ -5656,7 +5735,10 @@ export const schemaDict = {
           },
           reason: {
             type: 'union',
-            refs: ['lex:app.bsky.feed.defs#skeletonReasonRepost'],
+            refs: [
+              'lex:app.bsky.feed.defs#skeletonReasonRepost',
+              'lex:app.bsky.feed.defs#skeletonReasonPin',
+            ],
           },
           feedContext: {
             type: 'string',
@@ -5675,6 +5757,10 @@ export const schemaDict = {
             format: 'at-uri',
           },
         },
+      },
+      skeletonReasonPin: {
+        type: 'object',
+        properties: {},
       },
       threadgateView: {
         type: 'object',
@@ -6040,6 +6126,10 @@ export const schemaDict = {
                 'posts_and_author_threads',
               ],
               default: 'posts_with_replies',
+            },
+            includePins: {
+              type: 'boolean',
+              default: false,
             },
           },
         },
@@ -7125,7 +7215,7 @@ export const schemaDict = {
         type: 'record',
         key: 'tid',
         description:
-          "Record defining interaction gating rules for a thread (aka, reply controls). The record key (rkey) of the threadgate record must match the record key of the thread's root post, and that record must be in the same repository..",
+          "Record defining interaction gating rules for a thread (aka, reply controls). The record key (rkey) of the threadgate record must match the record key of the thread's root post, and that record must be in the same repository.",
         record: {
           type: 'object',
           required: ['post', 'createdAt'],
@@ -8199,6 +8289,12 @@ export const schemaDict = {
                   ref: 'lex:app.bsky.actor.defs#profileView',
                 },
               },
+              isFallback: {
+                type: 'boolean',
+                description:
+                  'If true, response has fallen-back to generic results, and is not scoped using relativeToDid',
+                default: false,
+              },
             },
           },
         },
@@ -9059,6 +9155,28 @@ export const schemaDict = {
       },
     },
   },
+  AppBskyUnspeccedGetConfig: {
+    lexicon: 1,
+    id: 'app.bsky.unspecced.getConfig',
+    defs: {
+      main: {
+        type: 'query',
+        description: 'Get miscellaneous runtime configuration.',
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: [],
+            properties: {
+              checkEmailConfirmed: {
+                type: 'boolean',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   AppBskyUnspeccedGetPopularFeedGenerators: {
     lexicon: 1,
     id: 'app.bsky.unspecced.getPopularFeedGenerators',
@@ -9154,6 +9272,12 @@ export const schemaDict = {
                   type: 'ref',
                   ref: 'lex:app.bsky.unspecced.defs#skeletonSearchActor',
                 },
+              },
+              relativeToDid: {
+                type: 'string',
+                format: 'did',
+                description:
+                  'DID of the account these suggestions are relative to. If this is returned undefined, suggestions are based on the viewer.',
               },
             },
           },
@@ -10612,6 +10736,7 @@ export const ids = {
   AppBskyNotificationUpdateSeen: 'app.bsky.notification.updateSeen',
   AppBskyRichtextFacet: 'app.bsky.richtext.facet',
   AppBskyUnspeccedDefs: 'app.bsky.unspecced.defs',
+  AppBskyUnspeccedGetConfig: 'app.bsky.unspecced.getConfig',
   AppBskyUnspeccedGetPopularFeedGenerators:
     'app.bsky.unspecced.getPopularFeedGenerators',
   AppBskyUnspeccedGetSuggestionsSkeleton:

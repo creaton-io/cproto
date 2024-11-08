@@ -101,7 +101,11 @@ export class BskyAppView {
       rejectUnauthorized: !config.dataplaneIgnoreBadTls,
     })
     const hydrator = new Hydrator(dataplane, config.labelsFromIssuerDids)
-    const views = new Views(imgUriBuilder, videoUriBuilder)
+    const views = new Views({
+      imgUriBuilder: imgUriBuilder,
+      videoUriBuilder: videoUriBuilder,
+      indexedAtEpoch: config.indexedAtEpoch,
+    })
 
     const bsyncClient = createBsyncClient({
       baseUrl: config.bsyncUrl,
@@ -110,14 +114,16 @@ export class BskyAppView {
       interceptors: config.bsyncApiKey ? [bsyncAuth(config.bsyncApiKey)] : [],
     })
 
-    const courierClient = createCourierClient({
-      baseUrl: config.courierUrl,
-      httpVersion: config.courierHttpVersion ?? '2',
-      nodeOptions: { rejectUnauthorized: !config.courierIgnoreBadTls },
-      interceptors: config.courierApiKey
-        ? [courierAuth(config.courierApiKey)]
-        : [],
-    })
+    const courierClient = config.courierUrl
+      ? createCourierClient({
+          baseUrl: config.courierUrl,
+          httpVersion: config.courierHttpVersion ?? '2',
+          nodeOptions: { rejectUnauthorized: !config.courierIgnoreBadTls },
+          interceptors: config.courierApiKey
+            ? [courierAuth(config.courierApiKey)]
+            : [],
+        })
+      : undefined
 
     const entrywayJwtPublicKey = config.entrywayJwtPublicKeyHex
       ? createPublicKeyObject(config.entrywayJwtPublicKeyHex)

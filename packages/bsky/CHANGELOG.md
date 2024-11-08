@@ -1,5 +1,111 @@
 # @atproto/bsky
 
+## 0.0.93
+
+### Patch Changes
+
+- [#2936](https://github.com/bluesky-social/atproto/pull/2936) [`1982693e3`](https://github.com/bluesky-social/atproto/commit/1982693e3ea1fef4db76ac9aca3db8dc5ebf3fe0) Thanks [@rafaelbsky](https://github.com/rafaelbsky)! - Use custom verifySignatureWithKey with native node:crypto instead of @noble/curves to evaluate performance
+
+- Updated dependencies [[`d6f33b474`](https://github.com/bluesky-social/atproto/commit/d6f33b4742e0b94722a993efc7d18833d9416bb6), [`b6eeb81c6`](https://github.com/bluesky-social/atproto/commit/b6eeb81c6d454b5ae91b05a21fc1820274c1b429), [`1982693e3`](https://github.com/bluesky-social/atproto/commit/1982693e3ea1fef4db76ac9aca3db8dc5ebf3fe0), [`1982693e3`](https://github.com/bluesky-social/atproto/commit/1982693e3ea1fef4db76ac9aca3db8dc5ebf3fe0), [`839202a3d`](https://github.com/bluesky-social/atproto/commit/839202a3d2b01de25de900cec7540019545798c6), [`e680d55ca`](https://github.com/bluesky-social/atproto/commit/e680d55ca2d7f6b213e2a8693eba6be39163ba41), [`c4b5e5395`](https://github.com/bluesky-social/atproto/commit/c4b5e53957463c37dd16fdd1b897d4ab02ab8e84)]:
+  - @atproto/api@0.13.15
+  - @atproto/crypto@0.4.2
+  - @atproto/xrpc-server@0.7.2
+  - @atproto/identity@0.4.3
+  - @atproto/repo@0.5.4
+  - @atproto/sync@0.1.5
+
+## 0.0.92
+
+### Patch Changes
+
+- [#2918](https://github.com/bluesky-social/atproto/pull/2918) [`209238769`](https://github.com/bluesky-social/atproto/commit/209238769c0bf38bf04f7fa9621eeb176b5c0ed8) Thanks [@devinivy](https://github.com/devinivy)! - add app.bsky.unspecced.getConfig endpoint
+
+- Updated dependencies [[`209238769`](https://github.com/bluesky-social/atproto/commit/209238769c0bf38bf04f7fa9621eeb176b5c0ed8), [`73f40e63a`](https://github.com/bluesky-social/atproto/commit/73f40e63abe3283efc0a27eef781c00b497caad1)]:
+  - @atproto/api@0.13.14
+
+## 0.0.91
+
+### Patch Changes
+
+- Updated dependencies [[`19e36afb2`](https://github.com/bluesky-social/atproto/commit/19e36afb2c13dbc7b1033eb3cab5e7fc6f496fdc)]:
+  - @atproto/api@0.13.13
+
+## 0.0.90
+
+### Patch Changes
+
+- Updated dependencies [[`d605577c2`](https://github.com/bluesky-social/atproto/commit/d605577c25d3e69c7cc0a1e858a4f009d1ea3096)]:
+  - @atproto/sync@0.1.4
+
+## 0.0.89
+
+### Patch Changes
+
+- Updated dependencies [[`22d039a22`](https://github.com/bluesky-social/atproto/commit/22d039a229e3ef08a793e1c98b473b1b8e18ac5e)]:
+  - @atproto/api@0.13.12
+
+## 0.0.88
+
+### Patch Changes
+
+- [#2853](https://github.com/bluesky-social/atproto/pull/2853) [`72549f442`](https://github.com/bluesky-social/atproto/commit/72549f442223c0c74594e111a9793e39b0c5ea2d) Thanks [@matthieusieben](https://github.com/matthieusieben)! - Allow using a handle as "actor" param in app.bsky.graph.getLists
+
+- [#2862](https://github.com/bluesky-social/atproto/pull/2862) [`08ed0a5a9`](https://github.com/bluesky-social/atproto/commit/08ed0a5a916685b2aaea783706e6d6287a2aa287) Thanks [@matthieusieben](https://github.com/matthieusieben)! - Add missing dev-dependency
+
+## 0.0.87
+
+### Patch Changes
+
+- Updated dependencies [[`a0531ce42`](https://github.com/bluesky-social/atproto/commit/a0531ce429f5139cb0e2cc19aa9b338599947e44)]:
+  - @atproto/api@0.13.11
+
+## 0.0.86
+
+### Patch Changes
+
+- Updated dependencies [[`df14df522`](https://github.com/bluesky-social/atproto/commit/df14df522bb7986e56ee1f6a0f5d862e1ea6f4d5)]:
+  - @atproto/api@0.13.10
+
+## 0.0.85
+
+### Patch Changes
+
+- Updated dependencies [[`4098d9890`](https://github.com/bluesky-social/atproto/commit/4098d9890173f4d6c6512f2d8994eebbf12b5e13), [`a2bad977a`](https://github.com/bluesky-social/atproto/commit/a2bad977a8d941b4075ea3ffee3d6f7a0c0f467c)]:
+  - @atproto/common@0.4.4
+  - @atproto/api@0.13.9
+  - @atproto/crypto@0.4.1
+  - @atproto/repo@0.5.3
+  - @atproto/sync@0.1.3
+  - @atproto/xrpc-server@0.7.1
+
+## 0.0.84
+
+### Patch Changes
+
+- Updated dependencies [[`2676206e4`](https://github.com/bluesky-social/atproto/commit/2676206e422233fefbf2d9d182e8d462f0957c93), [`a07b21151`](https://github.com/bluesky-social/atproto/commit/a07b21151f1850340c4b7797ebb11521b1a6cdf3), [`a07b21151`](https://github.com/bluesky-social/atproto/commit/a07b21151f1850340c4b7797ebb11521b1a6cdf3), [`87a1f2426`](https://github.com/bluesky-social/atproto/commit/87a1f24262e0e644b6cf31cc7a0446d9127ffa94), [`a07b21151`](https://github.com/bluesky-social/atproto/commit/a07b21151f1850340c4b7797ebb11521b1a6cdf3), [`a07b21151`](https://github.com/bluesky-social/atproto/commit/a07b21151f1850340c4b7797ebb11521b1a6cdf3), [`a07b21151`](https://github.com/bluesky-social/atproto/commit/a07b21151f1850340c4b7797ebb11521b1a6cdf3), [`a07b21151`](https://github.com/bluesky-social/atproto/commit/a07b21151f1850340c4b7797ebb11521b1a6cdf3), [`a07b21151`](https://github.com/bluesky-social/atproto/commit/a07b21151f1850340c4b7797ebb11521b1a6cdf3), [`a07b21151`](https://github.com/bluesky-social/atproto/commit/a07b21151f1850340c4b7797ebb11521b1a6cdf3)]:
+  - @atproto/api@0.13.8
+  - @atproto/xrpc-server@0.7.0
+  - @atproto/lexicon@0.4.2
+  - @atproto/common@0.4.3
+  - @atproto/identity@0.4.2
+  - @atproto/repo@0.5.2
+  - @atproto/sync@0.1.2
+  - @atproto/crypto@0.4.1
+
+## 0.0.83
+
+### Patch Changes
+
+- [#2810](https://github.com/bluesky-social/atproto/pull/2810) [`33aa0c722`](https://github.com/bluesky-social/atproto/commit/33aa0c722226a18215af0ae1833c7c552fc7aaa7) Thanks [@estrattonbailey](https://github.com/estrattonbailey)! - Add NUX API
+
+- Updated dependencies [[`e6bd5aecc`](https://github.com/bluesky-social/atproto/commit/e6bd5aecce7954d60e5fb263297e697ab7aab98e), [`98711a147`](https://github.com/bluesky-social/atproto/commit/98711a147a8674337f605c6368f39fc10c2fae93), [`98711a147`](https://github.com/bluesky-social/atproto/commit/98711a147a8674337f605c6368f39fc10c2fae93), [`33aa0c722`](https://github.com/bluesky-social/atproto/commit/33aa0c722226a18215af0ae1833c7c552fc7aaa7)]:
+  - @atproto/api@0.13.7
+  - @atproto/common@0.4.2
+  - @atproto/xrpc-server@0.6.4
+  - @atproto/crypto@0.4.1
+  - @atproto/repo@0.5.1
+  - @atproto/sync@0.1.1
+
 ## 0.0.82
 
 ### Patch Changes

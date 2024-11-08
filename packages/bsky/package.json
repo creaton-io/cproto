@@ -1,6 +1,6 @@
 {
   "name": "@atproto/bsky",
-  "version": "0.0.82",
+  "version": "0.0.93",
   "license": "MIT",
   "description": "Reference implementation of app.bsky App View (Bluesky API)",
   "keywords": [
@@ -51,11 +51,12 @@
     "key-encoder": "^2.0.3",
     "kysely": "^0.22.0",
     "multiformats": "^9.9.0",
+    "murmurhash": "^2.0.1",
     "p-queue": "^6.6.2",
     "pg": "^8.10.0",
     "pino": "^8.21.0",
     "pino-http": "^8.2.1",
-    "sharp": "^0.32.6",
+    "sharp": "^0.33.5",
     "statsig-node": "^5.23.1",
     "structured-headers": "^1.0.1",
     "typed-emitter": "^2.1.0",
@@ -64,7 +65,7 @@
   "devDependencies": {
     "@atproto/api": "workspace:^",
     "@atproto/lex-cli": "workspace:^",
-    "@atproto/pds": "npm:@cproto/pds@^0.5.1",
+    "@atproto/pds": "npm:@cproto/pds@^0.5.4",
     "@atproto/xrpc": "workspace:^",
     "@bufbuild/buf": "^1.28.1",
     "@bufbuild/protoc-gen-es": "^1.5.0",
@@ -77,6 +78,7 @@
     "@types/qs": "^6.9.7",
     "axios": "^0.27.2",
     "jest": "^28.1.2",
-    "ts-node": "^10.8.2"
+    "ts-node": "^10.8.2",
+    "typescript": "^5.6.3"
   }
 }

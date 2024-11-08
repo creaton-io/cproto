@@ -70,6 +70,13 @@ export const schemaDict = {
             type: 'string',
             format: 'datetime',
           },
+          threatSignatures: {
+            type: 'array',
+            items: {
+              type: 'ref',
+              ref: 'lex:com.atproto.admin.defs#threatSignature',
+            },
+          },
         },
       },
       repoRef: {
@@ -97,6 +104,18 @@ export const schemaDict = {
           recordUri: {
             type: 'string',
             format: 'at-uri',
+          },
+        },
+      },
+      threatSignature: {
+        type: 'object',
+        required: ['property', 'value'],
+        properties: {
+          property: {
+            type: 'string',
+          },
+          value: {
+            type: 'string',
           },
         },
       },
@@ -1322,7 +1341,7 @@ export const schemaDict = {
           },
           rkey: {
             type: 'string',
-            maxLength: 15,
+            maxLength: 512,
           },
           value: {
             type: 'unknown',
@@ -1431,7 +1450,7 @@ export const schemaDict = {
               rkey: {
                 type: 'string',
                 description: 'The Record Key.',
-                maxLength: 15,
+                maxLength: 512,
               },
               validate: {
                 type: 'boolean',
@@ -1686,6 +1705,11 @@ export const schemaDict = {
             },
           },
         },
+        errors: [
+          {
+            name: 'RecordNotFound',
+          },
+        ],
       },
     },
   },
@@ -1877,7 +1901,7 @@ export const schemaDict = {
               rkey: {
                 type: 'string',
                 description: 'The Record Key.',
-                maxLength: 15,
+                maxLength: 512,
               },
               validate: {
                 type: 'boolean',
@@ -4245,6 +4269,10 @@ export const schemaDict = {
               ref: 'lex:com.atproto.label.defs#label',
             },
           },
+          pinnedPost: {
+            type: 'ref',
+            ref: 'lex:com.atproto.repo.strongRef',
+          },
         },
       },
       profileAssociated: {
@@ -4627,6 +4655,15 @@ export const schemaDict = {
               maxLength: 100,
             },
           },
+          nuxs: {
+            description: 'Storage for NUXs the user has encountered.',
+            type: 'array',
+            maxLength: 100,
+            items: {
+              type: 'ref',
+              ref: 'lex:app.bsky.actor.defs#nux',
+            },
+          },
         },
       },
       bskyAppProgressGuide: {
@@ -4638,6 +4675,34 @@ export const schemaDict = {
           guide: {
             type: 'string',
             maxLength: 100,
+          },
+        },
+      },
+      nux: {
+        type: 'object',
+        description: 'A new user experiences (NUX) storage object',
+        required: ['id', 'completed'],
+        properties: {
+          id: {
+            type: 'string',
+            maxLength: 100,
+          },
+          completed: {
+            type: 'boolean',
+            default: false,
+          },
+          data: {
+            description:
+              'Arbitrary data for the NUX. The structure is defined by the NUX itself. Limited to 300 characters.',
+            type: 'string',
+            maxLength: 3000,
+            maxGraphemes: 300,
+          },
+          expiresAt: {
+            type: 'string',
+            format: 'datetime',
+            description:
+              'The date and time at which the NUX will expire and should be considered completed.',
           },
         },
       },
@@ -4827,6 +4892,10 @@ export const schemaDict = {
               refs: ['lex:com.atproto.label.defs#selfLabels'],
             },
             joinedViaStarterPack: {
+              type: 'ref',
+              ref: 'lex:com.atproto.repo.strongRef',
+            },
+            pinnedPost: {
               type: 'ref',
               ref: 'lex:com.atproto.repo.strongRef',
             },
@@ -5486,6 +5555,9 @@ export const schemaDict = {
           embeddingDisabled: {
             type: 'boolean',
           },
+          pinned: {
+            type: 'boolean',
+          },
         },
       },
       feedViewPost: {
@@ -5502,7 +5574,10 @@ export const schemaDict = {
           },
           reason: {
             type: 'union',
-            refs: ['lex:app.bsky.feed.defs#reasonRepost'],
+            refs: [
+              'lex:app.bsky.feed.defs#reasonRepost',
+              'lex:app.bsky.feed.defs#reasonPin',
+            ],
           },
           feedContext: {
             type: 'string',
@@ -5553,6 +5628,10 @@ export const schemaDict = {
             format: 'datetime',
           },
         },
+      },
+      reasonPin: {
+        type: 'object',
+        properties: {},
       },
       threadViewPost: {
         type: 'object',
@@ -5711,7 +5790,10 @@ export const schemaDict = {
           },
           reason: {
             type: 'union',
-            refs: ['lex:app.bsky.feed.defs#skeletonReasonRepost'],
+            refs: [
+              'lex:app.bsky.feed.defs#skeletonReasonRepost',
+              'lex:app.bsky.feed.defs#skeletonReasonPin',
+            ],
           },
           feedContext: {
             type: 'string',
@@ -5730,6 +5812,10 @@ export const schemaDict = {
             format: 'at-uri',
           },
         },
+      },
+      skeletonReasonPin: {
+        type: 'object',
+        properties: {},
       },
       threadgateView: {
         type: 'object',
@@ -6095,6 +6181,10 @@ export const schemaDict = {
                 'posts_and_author_threads',
               ],
               default: 'posts_with_replies',
+            },
+            includePins: {
+              type: 'boolean',
+              default: false,
             },
           },
         },
@@ -7180,7 +7270,7 @@ export const schemaDict = {
         type: 'record',
         key: 'tid',
         description:
-          "Record defining interaction gating rules for a thread (aka, reply controls). The record key (rkey) of the threadgate record must match the record key of the thread's root post, and that record must be in the same repository..",
+          "Record defining interaction gating rules for a thread (aka, reply controls). The record key (rkey) of the threadgate record must match the record key of the thread's root post, and that record must be in the same repository.",
         record: {
           type: 'object',
           required: ['post', 'createdAt'],
@@ -8254,6 +8344,12 @@ export const schemaDict = {
                   ref: 'lex:app.bsky.actor.defs#profileView',
                 },
               },
+              isFallback: {
+                type: 'boolean',
+                description:
+                  'If true, response has fallen-back to generic results, and is not scoped using relativeToDid',
+                default: false,
+              },
             },
           },
         },
@@ -9114,6 +9210,28 @@ export const schemaDict = {
       },
     },
   },
+  AppBskyUnspeccedGetConfig: {
+    lexicon: 1,
+    id: 'app.bsky.unspecced.getConfig',
+    defs: {
+      main: {
+        type: 'query',
+        description: 'Get miscellaneous runtime configuration.',
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: [],
+            properties: {
+              checkEmailConfirmed: {
+                type: 'boolean',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   AppBskyUnspeccedGetPopularFeedGenerators: {
     lexicon: 1,
     id: 'app.bsky.unspecced.getPopularFeedGenerators',
@@ -9209,6 +9327,12 @@ export const schemaDict = {
                   type: 'ref',
                   ref: 'lex:app.bsky.unspecced.defs#skeletonSearchActor',
                 },
+              },
+              relativeToDid: {
+                type: 'string',
+                format: 'did',
+                description:
+                  'DID of the account these suggestions are relative to. If this is returned undefined, suggestions are based on the viewer.',
               },
             },
           },
@@ -10752,6 +10876,9 @@ export const schemaDict = {
               'lex:tools.ozone.moderation.defs#modEventResolveAppeal',
               'lex:tools.ozone.moderation.defs#modEventDivert',
               'lex:tools.ozone.moderation.defs#modEventTag',
+              'lex:tools.ozone.moderation.defs#accountEvent',
+              'lex:tools.ozone.moderation.defs#identityEvent',
+              'lex:tools.ozone.moderation.defs#recordEvent',
             ],
           },
           subject: {
@@ -10816,6 +10943,9 @@ export const schemaDict = {
               'lex:tools.ozone.moderation.defs#modEventResolveAppeal',
               'lex:tools.ozone.moderation.defs#modEventDivert',
               'lex:tools.ozone.moderation.defs#modEventTag',
+              'lex:tools.ozone.moderation.defs#accountEvent',
+              'lex:tools.ozone.moderation.defs#identityEvent',
+              'lex:tools.ozone.moderation.defs#recordEvent',
             ],
           },
           subject: {
@@ -10856,6 +10986,13 @@ export const schemaDict = {
             refs: [
               'lex:com.atproto.admin.defs#repoRef',
               'lex:com.atproto.repo.strongRef',
+            ],
+          },
+          hosting: {
+            type: 'union',
+            refs: [
+              'lex:tools.ozone.moderation.defs#accountHosting',
+              'lex:tools.ozone.moderation.defs#recordHosting',
             ],
           },
           subjectBlobCids: {
@@ -11177,6 +11314,86 @@ export const schemaDict = {
           },
         },
       },
+      accountEvent: {
+        type: 'object',
+        description:
+          'Logs account status related events on a repo subject. Normally captured by automod from the firehose and emitted to ozone for historical tracking.',
+        required: ['timestamp', 'active'],
+        properties: {
+          comment: {
+            type: 'string',
+          },
+          active: {
+            type: 'boolean',
+            description:
+              'Indicates that the account has a repository which can be fetched from the host that emitted this event.',
+          },
+          status: {
+            type: 'string',
+            knownValues: [
+              'unknown',
+              'deactivated',
+              'deleted',
+              'takendown',
+              'suspended',
+              'tombstoned',
+            ],
+          },
+          timestamp: {
+            type: 'string',
+            format: 'datetime',
+          },
+        },
+      },
+      identityEvent: {
+        type: 'object',
+        description:
+          'Logs identity related events on a repo subject. Normally captured by automod from the firehose and emitted to ozone for historical tracking.',
+        required: ['timestamp'],
+        properties: {
+          comment: {
+            type: 'string',
+          },
+          handle: {
+            type: 'string',
+            format: 'handle',
+          },
+          pdsHost: {
+            type: 'string',
+            format: 'uri',
+          },
+          tombstone: {
+            type: 'boolean',
+          },
+          timestamp: {
+            type: 'string',
+            format: 'datetime',
+          },
+        },
+      },
+      recordEvent: {
+        type: 'object',
+        description:
+          'Logs lifecycle event on a record subject. Normally captured by automod from the firehose and emitted to ozone for historical tracking.',
+        required: ['timestamp', 'op'],
+        properties: {
+          comment: {
+            type: 'string',
+          },
+          op: {
+            type: 'string',
+            knownValues: ['create', 'update', 'delete'],
+          },
+          cid: {
+            type: 'string',
+            format: 'cid',
+          },
+          timestamp: {
+            type: 'string',
+            format: 'datetime',
+          },
+        },
+      },
       repoView: {
         type: 'object',
         required: [
@@ -11225,6 +11442,13 @@ export const schemaDict = {
           deactivatedAt: {
             type: 'string',
             format: 'datetime',
+          },
+          threatSignatures: {
+            type: 'array',
+            items: {
+              type: 'ref',
+              ref: 'lex:com.atproto.admin.defs#threatSignature',
+            },
           },
         },
       },
@@ -11294,6 +11518,13 @@ export const schemaDict = {
           deactivatedAt: {
             type: 'string',
             format: 'datetime',
+          },
+          threatSignatures: {
+            type: 'array',
+            items: {
+              type: 'ref',
+              ref: 'lex:com.atproto.admin.defs#threatSignature',
+            },
           },
         },
       },
@@ -11488,6 +11719,64 @@ export const schemaDict = {
           },
         },
       },
+      accountHosting: {
+        type: 'object',
+        required: ['status'],
+        properties: {
+          status: {
+            type: 'string',
+            knownValues: [
+              'takendown',
+              'suspended',
+              'deleted',
+              'deactivated',
+              'unknown',
+            ],
+          },
+          updatedAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+          createdAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+          deletedAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+          deactivatedAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+          reactivatedAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+        },
+      },
+      recordHosting: {
+        type: 'object',
+        required: ['status'],
+        properties: {
+          status: {
+            type: 'string',
+            knownValues: ['deleted', 'unknown'],
+          },
+          updatedAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+          createdAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+          deletedAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+        },
+      },
     },
   },
   ToolsOzoneModerationEmitEvent: {
@@ -11520,6 +11809,9 @@ export const schemaDict = {
                   'lex:tools.ozone.moderation.defs#modEventResolveAppeal',
                   'lex:tools.ozone.moderation.defs#modEventEmail',
                   'lex:tools.ozone.moderation.defs#modEventTag',
+                  'lex:tools.ozone.moderation.defs#accountEvent',
+                  'lex:tools.ozone.moderation.defs#identityEvent',
+                  'lex:tools.ozone.moderation.defs#recordEvent',
                 ],
               },
               subject: {
@@ -11620,6 +11912,49 @@ export const schemaDict = {
       },
     },
   },
+  ToolsOzoneModerationGetRecords: {
+    lexicon: 1,
+    id: 'tools.ozone.moderation.getRecords',
+    defs: {
+      main: {
+        type: 'query',
+        description: 'Get details about some records.',
+        parameters: {
+          type: 'params',
+          required: ['uris'],
+          properties: {
+            uris: {
+              type: 'array',
+              maxLength: 100,
+              items: {
+                type: 'string',
+                format: 'at-uri',
+              },
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['records'],
+            properties: {
+              records: {
+                type: 'array',
+                items: {
+                  type: 'union',
+                  refs: [
+                    'lex:tools.ozone.moderation.defs#recordViewDetail',
+                    'lex:tools.ozone.moderation.defs#recordViewNotFound',
+                  ],
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   ToolsOzoneModerationGetRepo: {
     lexicon: 1,
     id: 'tools.ozone.moderation.getRepo',
@@ -11649,6 +11984,49 @@ export const schemaDict = {
             name: 'RepoNotFound',
           },
         ],
+      },
+    },
+  },
+  ToolsOzoneModerationGetRepos: {
+    lexicon: 1,
+    id: 'tools.ozone.moderation.getRepos',
+    defs: {
+      main: {
+        type: 'query',
+        description: 'Get details about some repositories.',
+        parameters: {
+          type: 'params',
+          required: ['dids'],
+          properties: {
+            dids: {
+              type: 'array',
+              maxLength: 100,
+              items: {
+                type: 'string',
+                format: 'did',
+              },
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['repos'],
+            properties: {
+              repos: {
+                type: 'array',
+                items: {
+                  type: 'union',
+                  refs: [
+                    'lex:tools.ozone.moderation.defs#repoViewDetail',
+                    'lex:tools.ozone.moderation.defs#repoViewNotFound',
+                  ],
+                },
+              },
+            },
+          },
+        },
       },
     },
   },
@@ -11695,11 +12073,27 @@ export const schemaDict = {
               type: 'string',
               format: 'uri',
             },
+            collections: {
+              type: 'array',
+              maxLength: 20,
+              description:
+                "If specified, only events where the subject belongs to the given collections will be returned. When subjectType is set to 'account', this will be ignored.",
+              items: {
+                type: 'string',
+                format: 'nsid',
+              },
+            },
+            subjectType: {
+              type: 'string',
+              description:
+                "If specified, only events where the subject is of the given type (account or record) will be returned. When this is set to 'account' the 'collections' parameter will be ignored. When includeAllUserRecords or subject is set, this will be ignored.",
+              knownValues: ['account', 'record'],
+            },
             includeAllUserRecords: {
               type: 'boolean',
               default: false,
               description:
-                'If true, events on all record types (posts, lists, profile etc.) owned by the did are returned',
+                "If true, events on all record types (posts, lists, profile etc.) or records from given 'collections' param, owned by the did are returned.",
             },
             limit: {
               type: 'integer',
@@ -11794,7 +12188,7 @@ export const schemaDict = {
             includeAllUserRecords: {
               type: 'boolean',
               description:
-                "All subjects belonging to the account specified in the 'subject' param will be returned.",
+                "All subjects, or subjects from given 'collections' param, belonging to the account specified in the 'subject' param will be returned.",
             },
             subject: {
               type: 'string',
@@ -11819,6 +12213,38 @@ export const schemaDict = {
               type: 'string',
               format: 'datetime',
               description: 'Search subjects reviewed after a given timestamp',
+            },
+            hostingDeletedAfter: {
+              type: 'string',
+              format: 'datetime',
+              description:
+                'Search subjects where the associated record/account was deleted after a given timestamp',
+            },
+            hostingDeletedBefore: {
+              type: 'string',
+              format: 'datetime',
+              description:
+                'Search subjects where the associated record/account was deleted before a given timestamp',
+            },
+            hostingUpdatedAfter: {
+              type: 'string',
+              format: 'datetime',
+              description:
+                'Search subjects where the associated record/account was updated after a given timestamp',
+            },
+            hostingUpdatedBefore: {
+              type: 'string',
+              format: 'datetime',
+              description:
+                'Search subjects where the associated record/account was updated before a given timestamp',
+            },
+            hostingStatuses: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+              description:
+                'Search subjects by the status of the associated record/account',
             },
             reviewedBefore: {
               type: 'string',
@@ -11890,6 +12316,22 @@ export const schemaDict = {
             },
             cursor: {
               type: 'string',
+            },
+            collections: {
+              type: 'array',
+              maxLength: 20,
+              description:
+                "If specified, subjects belonging to the given collections will be returned. When subjectType is set to 'account', this will be ignored.",
+              items: {
+                type: 'string',
+                format: 'nsid',
+              },
+            },
+            subjectType: {
+              type: 'string',
+              description:
+                "If specified, subjects of the given type (account or record) will be returned. When this is set to 'account' the 'collections' parameter will be ignored. When includeAllUserRecords or subject is set, this will be ignored.",
+              knownValues: ['account', 'record'],
             },
           },
         },
@@ -12020,6 +12462,694 @@ export const schemaDict = {
               'tools.ozone.team.defs#roleModerator',
               'tools.ozone.team.defs#roleTriage',
             ],
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSetAddValues: {
+    lexicon: 1,
+    id: 'tools.ozone.set.addValues',
+    defs: {
+      main: {
+        type: 'procedure',
+        description:
+          'Add values to a specific set. Attempting to add values to a set that does not exist will result in an error.',
+        input: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['name', 'values'],
+            properties: {
+              name: {
+                type: 'string',
+                description: 'Name of the set to add values to',
+              },
+              values: {
+                type: 'array',
+                minLength: 1,
+                maxLength: 1000,
+                items: {
+                  type: 'string',
+                },
+                description: 'Array of string values to add to the set',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSetDefs: {
+    lexicon: 1,
+    id: 'tools.ozone.set.defs',
+    defs: {
+      set: {
+        type: 'object',
+        required: ['name'],
+        properties: {
+          name: {
+            type: 'string',
+            minLength: 3,
+            maxLength: 128,
+          },
+          description: {
+            type: 'string',
+            maxGraphemes: 1024,
+            maxLength: 10240,
+          },
+        },
+      },
+      setView: {
+        type: 'object',
+        required: ['name', 'setSize', 'createdAt', 'updatedAt'],
+        properties: {
+          name: {
+            type: 'string',
+            minLength: 3,
+            maxLength: 128,
+          },
+          description: {
+            type: 'string',
+            maxGraphemes: 1024,
+            maxLength: 10240,
+          },
+          setSize: {
+            type: 'integer',
+          },
+          createdAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+          updatedAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSetDeleteSet: {
+    lexicon: 1,
+    id: 'tools.ozone.set.deleteSet',
+    defs: {
+      main: {
+        type: 'procedure',
+        description:
+          'Delete an entire set. Attempting to delete a set that does not exist will result in an error.',
+        input: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['name'],
+            properties: {
+              name: {
+                type: 'string',
+                description: 'Name of the set to delete',
+              },
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            properties: {},
+          },
+        },
+        errors: [
+          {
+            name: 'SetNotFound',
+            description: 'set with the given name does not exist',
+          },
+        ],
+      },
+    },
+  },
+  ToolsOzoneSetDeleteValues: {
+    lexicon: 1,
+    id: 'tools.ozone.set.deleteValues',
+    defs: {
+      main: {
+        type: 'procedure',
+        description:
+          'Delete values from a specific set. Attempting to delete values that are not in the set will not result in an error',
+        input: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['name', 'values'],
+            properties: {
+              name: {
+                type: 'string',
+                description: 'Name of the set to delete values from',
+              },
+              values: {
+                type: 'array',
+                minLength: 1,
+                items: {
+                  type: 'string',
+                },
+                description: 'Array of string values to delete from the set',
+              },
+            },
+          },
+        },
+        errors: [
+          {
+            name: 'SetNotFound',
+            description: 'set with the given name does not exist',
+          },
+        ],
+      },
+    },
+  },
+  ToolsOzoneSetGetValues: {
+    lexicon: 1,
+    id: 'tools.ozone.set.getValues',
+    defs: {
+      main: {
+        type: 'query',
+        description: 'Get a specific set and its values',
+        parameters: {
+          type: 'params',
+          required: ['name'],
+          properties: {
+            name: {
+              type: 'string',
+            },
+            limit: {
+              type: 'integer',
+              minimum: 1,
+              maximum: 1000,
+              default: 100,
+            },
+            cursor: {
+              type: 'string',
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['set', 'values'],
+            properties: {
+              set: {
+                type: 'ref',
+                ref: 'lex:tools.ozone.set.defs#setView',
+              },
+              values: {
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+              },
+              cursor: {
+                type: 'string',
+              },
+            },
+          },
+        },
+        errors: [
+          {
+            name: 'SetNotFound',
+            description: 'set with the given name does not exist',
+          },
+        ],
+      },
+    },
+  },
+  ToolsOzoneSetQuerySets: {
+    lexicon: 1,
+    id: 'tools.ozone.set.querySets',
+    defs: {
+      main: {
+        type: 'query',
+        description: 'Query available sets',
+        parameters: {
+          type: 'params',
+          properties: {
+            limit: {
+              type: 'integer',
+              minimum: 1,
+              maximum: 100,
+              default: 50,
+            },
+            cursor: {
+              type: 'string',
+            },
+            namePrefix: {
+              type: 'string',
+            },
+            sortBy: {
+              type: 'string',
+              enum: ['name', 'createdAt', 'updatedAt'],
+              default: 'name',
+            },
+            sortDirection: {
+              type: 'string',
+              default: 'asc',
+              enum: ['asc', 'desc'],
+              description: 'Defaults to ascending order of name field.',
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['sets'],
+            properties: {
+              sets: {
+                type: 'array',
+                items: {
+                  type: 'ref',
+                  ref: 'lex:tools.ozone.set.defs#setView',
+                },
+              },
+              cursor: {
+                type: 'string',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSetUpsertSet: {
+    lexicon: 1,
+    id: 'tools.ozone.set.upsertSet',
+    defs: {
+      main: {
+        type: 'procedure',
+        description: 'Create or update set metadata',
+        input: {
+          encoding: 'application/json',
+          schema: {
+            type: 'ref',
+            ref: 'lex:tools.ozone.set.defs#set',
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'ref',
+            ref: 'lex:tools.ozone.set.defs#setView',
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSettingDefs: {
+    lexicon: 1,
+    id: 'tools.ozone.setting.defs',
+    defs: {
+      option: {
+        type: 'object',
+        required: [
+          'key',
+          'value',
+          'did',
+          'scope',
+          'createdBy',
+          'lastUpdatedBy',
+        ],
+        properties: {
+          key: {
+            type: 'string',
+            format: 'nsid',
+          },
+          did: {
+            type: 'string',
+            format: 'did',
+          },
+          value: {
+            type: 'unknown',
+          },
+          description: {
+            type: 'string',
+            maxGraphemes: 1024,
+            maxLength: 10240,
+          },
+          createdAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+          updatedAt: {
+            type: 'string',
+            format: 'datetime',
+          },
+          managerRole: {
+            type: 'string',
+            knownValues: [
+              'tools.ozone.team.defs#roleModerator',
+              'tools.ozone.team.defs#roleTriage',
+              'tools.ozone.team.defs#roleAdmin',
+            ],
+          },
+          scope: {
+            type: 'string',
+            knownValues: ['instance', 'personal'],
+          },
+          createdBy: {
+            type: 'string',
+            format: 'did',
+          },
+          lastUpdatedBy: {
+            type: 'string',
+            format: 'did',
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSettingListOptions: {
+    lexicon: 1,
+    id: 'tools.ozone.setting.listOptions',
+    defs: {
+      main: {
+        type: 'query',
+        description: 'List settings with optional filtering',
+        parameters: {
+          type: 'params',
+          properties: {
+            limit: {
+              type: 'integer',
+              minimum: 1,
+              maximum: 100,
+              default: 50,
+            },
+            cursor: {
+              type: 'string',
+            },
+            scope: {
+              type: 'string',
+              knownValues: ['instance', 'personal'],
+              default: 'instance',
+            },
+            prefix: {
+              type: 'string',
+              description: 'Filter keys by prefix',
+            },
+            keys: {
+              type: 'array',
+              maxLength: 100,
+              items: {
+                type: 'string',
+                format: 'nsid',
+              },
+              description:
+                'Filter for only the specified keys. Ignored if prefix is provided',
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['options'],
+            properties: {
+              cursor: {
+                type: 'string',
+              },
+              options: {
+                type: 'array',
+                items: {
+                  type: 'ref',
+                  ref: 'lex:tools.ozone.setting.defs#option',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSettingRemoveOptions: {
+    lexicon: 1,
+    id: 'tools.ozone.setting.removeOptions',
+    defs: {
+      main: {
+        type: 'procedure',
+        description: 'Delete settings by key',
+        input: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['keys', 'scope'],
+            properties: {
+              keys: {
+                type: 'array',
+                minLength: 1,
+                maxLength: 200,
+                items: {
+                  type: 'string',
+                  format: 'nsid',
+                },
+              },
+              scope: {
+                type: 'string',
+                knownValues: ['instance', 'personal'],
+              },
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            properties: {},
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSettingUpsertOption: {
+    lexicon: 1,
+    id: 'tools.ozone.setting.upsertOption',
+    defs: {
+      main: {
+        type: 'procedure',
+        description: 'Create or update setting option',
+        input: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['key', 'scope', 'value'],
+            properties: {
+              key: {
+                type: 'string',
+                format: 'nsid',
+              },
+              scope: {
+                type: 'string',
+                knownValues: ['instance', 'personal'],
+              },
+              value: {
+                type: 'unknown',
+              },
+              description: {
+                type: 'string',
+                maxLength: 2000,
+              },
+              managerRole: {
+                type: 'string',
+                knownValues: [
+                  'tools.ozone.team.defs#roleModerator',
+                  'tools.ozone.team.defs#roleTriage',
+                  'tools.ozone.team.defs#roleAdmin',
+                ],
+              },
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['option'],
+            properties: {
+              option: {
+                type: 'ref',
+                ref: 'lex:tools.ozone.setting.defs#option',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSignatureDefs: {
+    lexicon: 1,
+    id: 'tools.ozone.signature.defs',
+    defs: {
+      sigDetail: {
+        type: 'object',
+        required: ['property', 'value'],
+        properties: {
+          property: {
+            type: 'string',
+          },
+          value: {
+            type: 'string',
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSignatureFindCorrelation: {
+    lexicon: 1,
+    id: 'tools.ozone.signature.findCorrelation',
+    defs: {
+      main: {
+        type: 'query',
+        description:
+          'Find all correlated threat signatures between 2 or more accounts.',
+        parameters: {
+          type: 'params',
+          required: ['dids'],
+          properties: {
+            dids: {
+              type: 'array',
+              items: {
+                type: 'string',
+                format: 'did',
+              },
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['details'],
+            properties: {
+              details: {
+                type: 'array',
+                items: {
+                  type: 'ref',
+                  ref: 'lex:tools.ozone.signature.defs#sigDetail',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSignatureFindRelatedAccounts: {
+    lexicon: 1,
+    id: 'tools.ozone.signature.findRelatedAccounts',
+    defs: {
+      main: {
+        type: 'query',
+        description:
+          'Get accounts that share some matching threat signatures with the root account.',
+        parameters: {
+          type: 'params',
+          required: ['did'],
+          properties: {
+            did: {
+              type: 'string',
+              format: 'did',
+            },
+            cursor: {
+              type: 'string',
+            },
+            limit: {
+              type: 'integer',
+              minimum: 1,
+              maximum: 100,
+              default: 50,
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['accounts'],
+            properties: {
+              cursor: {
+                type: 'string',
+              },
+              accounts: {
+                type: 'array',
+                items: {
+                  type: 'ref',
+                  ref: 'lex:tools.ozone.signature.findRelatedAccounts#relatedAccount',
+                },
+              },
+            },
+          },
+        },
+      },
+      relatedAccount: {
+        type: 'object',
+        required: ['account'],
+        properties: {
+          account: {
+            type: 'ref',
+            ref: 'lex:com.atproto.admin.defs#accountView',
+          },
+          similarities: {
+            type: 'array',
+            items: {
+              type: 'ref',
+              ref: 'lex:tools.ozone.signature.defs#sigDetail',
+            },
+          },
+        },
+      },
+    },
+  },
+  ToolsOzoneSignatureSearchAccounts: {
+    lexicon: 1,
+    id: 'tools.ozone.signature.searchAccounts',
+    defs: {
+      main: {
+        type: 'query',
+        description:
+          'Search for accounts that match one or more threat signature values.',
+        parameters: {
+          type: 'params',
+          required: ['values'],
+          properties: {
+            values: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+            },
+            cursor: {
+              type: 'string',
+            },
+            limit: {
+              type: 'integer',
+              minimum: 1,
+              maximum: 100,
+              default: 50,
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['accounts'],
+            properties: {
+              cursor: {
+                type: 'string',
+              },
+              accounts: {
+                type: 'array',
+                items: {
+                  type: 'ref',
+                  ref: 'lex:com.atproto.admin.defs#accountView',
+                },
+              },
+            },
           },
         },
       },
@@ -12423,6 +13553,7 @@ export const ids = {
   AppBskyNotificationUpdateSeen: 'app.bsky.notification.updateSeen',
   AppBskyRichtextFacet: 'app.bsky.richtext.facet',
   AppBskyUnspeccedDefs: 'app.bsky.unspecced.defs',
+  AppBskyUnspeccedGetConfig: 'app.bsky.unspecced.getConfig',
   AppBskyUnspeccedGetPopularFeedGenerators:
     'app.bsky.unspecced.getPopularFeedGenerators',
   AppBskyUnspeccedGetSuggestionsSkeleton:
@@ -12469,11 +13600,29 @@ export const ids = {
   ToolsOzoneModerationEmitEvent: 'tools.ozone.moderation.emitEvent',
   ToolsOzoneModerationGetEvent: 'tools.ozone.moderation.getEvent',
   ToolsOzoneModerationGetRecord: 'tools.ozone.moderation.getRecord',
+  ToolsOzoneModerationGetRecords: 'tools.ozone.moderation.getRecords',
   ToolsOzoneModerationGetRepo: 'tools.ozone.moderation.getRepo',
+  ToolsOzoneModerationGetRepos: 'tools.ozone.moderation.getRepos',
   ToolsOzoneModerationQueryEvents: 'tools.ozone.moderation.queryEvents',
   ToolsOzoneModerationQueryStatuses: 'tools.ozone.moderation.queryStatuses',
   ToolsOzoneModerationSearchRepos: 'tools.ozone.moderation.searchRepos',
   ToolsOzoneServerGetConfig: 'tools.ozone.server.getConfig',
+  ToolsOzoneSetAddValues: 'tools.ozone.set.addValues',
+  ToolsOzoneSetDefs: 'tools.ozone.set.defs',
+  ToolsOzoneSetDeleteSet: 'tools.ozone.set.deleteSet',
+  ToolsOzoneSetDeleteValues: 'tools.ozone.set.deleteValues',
+  ToolsOzoneSetGetValues: 'tools.ozone.set.getValues',
+  ToolsOzoneSetQuerySets: 'tools.ozone.set.querySets',
+  ToolsOzoneSetUpsertSet: 'tools.ozone.set.upsertSet',
+  ToolsOzoneSettingDefs: 'tools.ozone.setting.defs',
+  ToolsOzoneSettingListOptions: 'tools.ozone.setting.listOptions',
+  ToolsOzoneSettingRemoveOptions: 'tools.ozone.setting.removeOptions',
+  ToolsOzoneSettingUpsertOption: 'tools.ozone.setting.upsertOption',
+  ToolsOzoneSignatureDefs: 'tools.ozone.signature.defs',
+  ToolsOzoneSignatureFindCorrelation: 'tools.ozone.signature.findCorrelation',
+  ToolsOzoneSignatureFindRelatedAccounts:
+    'tools.ozone.signature.findRelatedAccounts',
+  ToolsOzoneSignatureSearchAccounts: 'tools.ozone.signature.searchAccounts',
   ToolsOzoneTeamAddMember: 'tools.ozone.team.addMember',
   ToolsOzoneTeamDefs: 'tools.ozone.team.defs',
   ToolsOzoneTeamDeleteMember: 'tools.ozone.team.deleteMember',

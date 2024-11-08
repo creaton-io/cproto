@@ -1,6 +1,11 @@
 import { TID } from '@atproto/common-web'
 import { AtUri, ensureValidDid } from '@atproto/syntax'
-import { buildFetchHandler, FetchHandler, XrpcClient } from '@atproto/xrpc'
+import {
+  buildFetchHandler,
+  BuildFetchHandlerOptions,
+  FetchHandler,
+  XrpcClient,
+} from '@atproto/xrpc'
 import AwaitLock from 'await-lock'
 import {
   AppBskyActorDefs,
@@ -14,7 +19,7 @@ import {
   ToolsNS,
 } from './client/index'
 import { schemas } from './client/lexicons'
-import { MutedWord } from './client/types/app/bsky/actor/defs'
+import { MutedWord, Nux } from './client/types/app/bsky/actor/defs'
 import { BSKY_LABELER_DID } from './const'
 import { interpretLabelValueDefinitions } from './moderation'
 import { DEFAULT_LABEL_SETTINGS } from './moderation/const/labels'
@@ -40,6 +45,7 @@ import {
   sanitizeMutedWordValue,
   savedFeedsToUriArrays,
   validateSavedFeed,
+  validateNux,
 } from './util'
 
 const FEED_VIEW_PREF_DEFAULTS = {
@@ -104,8 +110,16 @@ export class Agent extends XrpcClient {
     return this
   }
 
-  constructor(readonly sessionManager: SessionManager) {
-    const fetchHandler = buildFetchHandler(sessionManager)
+  readonly sessionManager: SessionManager
+
+  constructor(options: string | URL | SessionManager) {
+    const sessionManager: SessionManager =
+      typeof options === 'string' || options instanceof URL
+        ? {
+            did: undefined,
+            fetchHandler: buildFetchHandler(options),
+          }
+        : options
 
     super((url, init) => {
       const headers = new Headers(init?.headers)
@@ -127,8 +141,10 @@ export class Agent extends XrpcClient {
           .join(', '),
       )
 
-      return fetchHandler(url, { ...init, headers })
+      return this.sessionManager.fetchHandler(url, { ...init, headers })
     }, schemas)
+
+    this.sessionManager = sessionManager
   }
 
   //#region Cloning utilities
@@ -570,6 +586,7 @@ export class Agent extends XrpcClient {
       bskyAppState: {
         queuedNudges: [],
         activeProgressGuide: undefined,
+        nuxs: [],
       },
     }
     const res = await this.app.bsky.actor.getPreferences({})
@@ -674,6 +691,7 @@ export class Agent extends XrpcClient {
         const { $type, ...v } = pref
         prefs.bskyAppState.queuedNudges = v.queuedNudges || []
         prefs.bskyAppState.activeProgressGuide = v.activeProgressGuide
+        prefs.bskyAppState.nuxs = v.nuxs || []
       }
     }
 
@@ -1362,6 +1380,82 @@ export class Agent extends XrpcClient {
 
       bskyAppStatePref = bskyAppStatePref || {}
       bskyAppStatePref.activeProgressGuide = guide
+
+      return prefs
+        .filter((p) => !AppBskyActorDefs.isBskyAppStatePref(p))
+        .concat([
+          {
+            ...bskyAppStatePref,
+            $type: 'app.bsky.actor.defs#bskyAppStatePref',
+          },
+        ])
+    })
+  }
+
+  /**
+   * Insert or update a NUX in user prefs
+   */
+  async bskyAppUpsertNux(nux: Nux) {
+    validateNux(nux)
+
+    await this.updatePreferences((prefs: AppBskyActorDefs.Preferences) => {
+      let bskyAppStatePref: AppBskyActorDefs.BskyAppStatePref = prefs.findLast(
+        (pref) =>
+          AppBskyActorDefs.isBskyAppStatePref(pref) &&
+          AppBskyActorDefs.validateBskyAppStatePref(pref).success,
+      )
+
+      bskyAppStatePref = bskyAppStatePref || {}
+      bskyAppStatePref.nuxs = bskyAppStatePref.nuxs || []
+
+      const existing = bskyAppStatePref.nuxs?.find((n) => {
+        return n.id === nux.id
+      })
+
+      let next: AppBskyActorDefs.Nux
+
+      if (existing) {
+        next = {
+          id: existing.id,
+          completed: nux.completed,
+          data: nux.data,
+          expiresAt: nux.expiresAt,
+        }
+      } else {
+        next = nux
+      }
+
+      // remove duplicates and append
+      bskyAppStatePref.nuxs = bskyAppStatePref.nuxs
+        .filter((n) => n.id !== nux.id)
+        .concat(next)
+
+      return prefs
+        .filter((p) => !AppBskyActorDefs.isBskyAppStatePref(p))
+        .concat([
+          {
+            ...bskyAppStatePref,
+            $type: 'app.bsky.actor.defs#bskyAppStatePref',
+          },
+        ])
+    })
+  }
+
+  /**
+   * Removes NUXs from user preferences.
+   */
+  async bskyAppRemoveNuxs(ids: string[]) {
+    await this.updatePreferences((prefs: AppBskyActorDefs.Preferences) => {
+      let bskyAppStatePref: AppBskyActorDefs.BskyAppStatePref = prefs.findLast(
+        (pref) =>
+          AppBskyActorDefs.isBskyAppStatePref(pref) &&
+          AppBskyActorDefs.validateBskyAppStatePref(pref).success,
+      )
+
+      bskyAppStatePref = bskyAppStatePref || {}
+      bskyAppStatePref.nuxs = (bskyAppStatePref.nuxs || []).filter((nux) => {
+        return !ids.includes(nux.id)
+      })
 
       return prefs
         .filter((p) => !AppBskyActorDefs.isBskyAppStatePref(p))
