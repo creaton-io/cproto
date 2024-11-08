@@ -2,7 +2,7 @@ import { DidDocument, MINUTE, check } from '@atproto/common'
 import { AtprotoData, ensureAtpDocument } from '@atproto/identity'
 import { AuthRequiredError, InvalidRequestError } from '@atproto/xrpc-server'
 import { ExportableKeypair, Keypair, Secp256k1Keypair } from '@atproto/crypto'
-import * as plc from '@did-plc/lib'
+import * as plc from '@cproto/did-plc-lib'
 import disposable from 'disposable-email'
 import {
   baseNormalizeAndValidate,
@@ -28,6 +28,8 @@ export default function (server: Server, ctx: AppContext) {
         handle,
         email,
         password,
+        ethAddress,
+        signature,
         inviteCode,
         signingKey,
         plcOp,
@@ -64,6 +66,8 @@ export default function (server: Server, ctx: AppContext) {
           handle,
           email,
           password,
+          ethAddress,
+          signature,
           repoCid: commit.cid,
           repoRev: commit.rev,
           inviteCode,
@@ -119,7 +123,7 @@ const validateInputsForEntrywayPds = async (
     )
   }
   try {
-    await plc.assureValidOp(plcOp)
+    await plc.assureValidCreationOp(did, plcOp)
     await plc.assureValidSig([plcRotationKey], plcOp)
   } catch (err) {
     throw new InvalidRequestError('invalid plc operation', 'IncompatibleDidDoc')
@@ -149,6 +153,8 @@ const validateInputsForEntrywayPds = async (
     handle,
     email: undefined,
     password: undefined,
+    ethAddress: undefined,
+    signature: undefined,
     inviteCode: undefined,
     signingKey,
     plcOp,
@@ -161,7 +167,7 @@ const validateInputsForLocalPds = async (
   input: CreateAccountInput,
   requester: string | null,
 ) => {
-  const { email, password, inviteCode } = input
+  const { email, password, ethAddress, signature, inviteCode } = input
   if (input.plcOp) {
     throw new InvalidRequestError('Unsupported input: "plcOp"')
   }
@@ -231,6 +237,8 @@ const validateInputsForLocalPds = async (
     handle,
     email,
     password,
+    ethAddress,
+    signature,
     inviteCode,
     signingKey,
     plcOp,
@@ -259,6 +267,7 @@ const formatDidAndPlcOp = async (
     signingKey: signingKey.did(),
     rotationKeys,
     handle,
+    ethAddress: input.ethAddress,
     pds: ctx.cfg.service.publicUrl,
     signer: ctx.plcRotationKey,
   })

@@ -77,8 +77,9 @@ export async function up(db: Kysely<unknown>): Promise<void> {
   await db.schema
     .createTable('account')
     .addColumn('did', 'varchar', (col) => col.primaryKey())
-    .addColumn('email', 'varchar', (col) => col.notNull())
-    .addColumn('passwordScrypt', 'varchar', (col) => col.notNull())
+    .addColumn('email', 'varchar') //TODO this might break something in the mail send functions, make sending mail optional
+    .addColumn('passwordScrypt', 'varchar')
+    .addColumn('ethAddress', 'varchar')
     .addColumn('emailConfirmedAt', 'varchar')
     .addColumn('invitesDisabled', 'int2', (col) => col.notNull().defaultTo(0))
     .execute()
@@ -101,8 +102,15 @@ export async function up(db: Kysely<unknown>): Promise<void> {
       'token',
     ])
     .execute()
-}
 
+  await db.schema
+    .createTable('siwe')
+    .addColumn('did', 'varchar', (col) => col.primaryKey())
+    .addColumn('createdAt', 'varchar', (col) => col.notNull())
+    .addColumn('siweMessage', 'varchar', (col) => col.notNull())
+    .execute()
+  
+  }
 export async function down(db: Kysely<unknown>): Promise<void> {
   await db.schema.dropTable('email_token').execute()
   await db.schema.dropTable('account').execute()
@@ -112,4 +120,5 @@ export async function down(db: Kysely<unknown>): Promise<void> {
   await db.schema.dropTable('invite_code_use').execute()
   await db.schema.dropTable('invite_code').execute()
   await db.schema.dropTable('app_password').execute()
+  await db.schema.dropTable('siwe').execute()
 }

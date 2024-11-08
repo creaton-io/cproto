@@ -19,7 +19,7 @@ export const verifyAccountPassword = async (
     .selectAll()
     .where('did', '=', did)
     .executeTakeFirst()
-  return found ? await scrypt.verify(password, found.passwordScrypt) : false
+  return found?.passwordScrypt ? await scrypt.verify(password, found.passwordScrypt) : false
 }
 
 export const verifyAppPassword = async (
@@ -41,20 +41,20 @@ export const verifyAppPassword = async (
   }
 }
 
-export const updateUserPassword = async (
-  db: AccountDb,
-  opts: {
-    did: string
-    passwordScrypt: string
-  },
-) => {
-  await db.executeWithRetry(
-    db.db
-      .updateTable('account')
-      .set({ passwordScrypt: opts.passwordScrypt })
-      .where('did', '=', opts.did),
-  )
-}
+// export const updateUserPassword = async (
+//   db: AccountDb,
+//   opts: {
+//     did: string
+//     passwordScrypt: string
+//   },
+// ) => {
+//   await db.executeWithRetry(
+//     db.db
+//       .updateTable('account')
+//       .set({ passwordScrypt: opts.passwordScrypt })
+//       .where('did', '=', opts.did),
+//   )
+// }
 
 export const createAppPassword = async (
   db: AccountDb,

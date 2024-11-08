@@ -2155,7 +2155,17 @@ export const schemaDict = {
               password: {
                 type: 'string',
                 description:
-                  'Initial account password. May need to meet instance-specific password strength requirements.',
+                  'Initial account password, optional if Ethereum Address is used. May need to meet instance-specific password strength requirements.',
+              },
+              ethAddress: {
+                type: 'string',
+                description:
+                  'Initial ethereum address to be associated with the account, used to log in with signature',
+              },
+              signature: {
+                type: 'string',
+                description:
+                  'Signature to verify if user is owner of ethAddress',
               },
               recoveryKey: {
                 type: 'string',
@@ -2388,6 +2398,45 @@ export const schemaDict = {
       },
     },
   },
+  ComAtprotoServerCreateSIWE: {
+    lexicon: 1,
+    id: 'com.atproto.server.createSIWE',
+    defs: {
+      main: {
+        type: 'procedure',
+        description: 'Creates a SIWE (Sign-In with Ethereum) message.',
+        input: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['identifier'],
+            properties: {
+              identifier: {
+                type: 'string',
+                description:
+                  'Handle or other identifier supported by the server for the authenticating user.',
+              },
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['siweMessage'],
+            properties: {
+              siweMessage: {
+                type: 'string',
+                description:
+                  "The SIWE message to be signed by the user's wallet.",
+              },
+            },
+          },
+        },
+        errors: [],
+      },
+    },
+  },
   ComAtprotoServerCreateSession: {
     lexicon: 1,
     id: 'com.atproto.server.createSession',
@@ -2399,7 +2448,7 @@ export const schemaDict = {
           encoding: 'application/json',
           schema: {
             type: 'object',
-            required: ['identifier', 'password'],
+            required: ['identifier'],
             properties: {
               identifier: {
                 type: 'string',
@@ -2407,6 +2456,9 @@ export const schemaDict = {
                   'Handle or other identifier supported by the server for the authenticating user.',
               },
               password: {
+                type: 'string',
+              },
+              siweSignature: {
                 type: 'string',
               },
               authFactorToken: {
@@ -2439,6 +2491,9 @@ export const schemaDict = {
                 type: 'unknown',
               },
               email: {
+                type: 'string',
+              },
+              ethAddress: {
                 type: 'string',
               },
               emailConfirmed: {
@@ -13378,6 +13433,7 @@ export const ids = {
   ComAtprotoServerCreateAppPassword: 'com.atproto.server.createAppPassword',
   ComAtprotoServerCreateInviteCode: 'com.atproto.server.createInviteCode',
   ComAtprotoServerCreateInviteCodes: 'com.atproto.server.createInviteCodes',
+  ComAtprotoServerCreateSIWE: 'com.atproto.server.createSIWE',
   ComAtprotoServerCreateSession: 'com.atproto.server.createSession',
   ComAtprotoServerDeactivateAccount: 'com.atproto.server.deactivateAccount',
   ComAtprotoServerDefs: 'com.atproto.server.defs',
