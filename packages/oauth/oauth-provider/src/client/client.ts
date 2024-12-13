@@ -211,7 +211,7 @@ export class Client {
             alg: clientAuth.alg,
           },
           { payload: '', signature: '' },
-        )
+        ) as KeyLike
         const jtk = await authJwkThumbprint(key)
 
         return jtk === clientAuth.jkt
