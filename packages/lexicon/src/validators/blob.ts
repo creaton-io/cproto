@@ -10,6 +10,7 @@ export function blob(
 ): ValidationResult {
   // check
   if (!value || !(value instanceof BlobRef)) {
+    console.log('VALUE', value)
     return {
       success: false,
       error: new ValidationError(`${path} should be a blob ref`),
