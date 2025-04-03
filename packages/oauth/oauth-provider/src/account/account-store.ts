@@ -52,7 +52,8 @@ export type CreateAccountData = {
 
 export type AuthenticateAccountData = {
   locale: string
-  password: string
+  password?: string | undefined
+  siweSignature?: string | undefined
   username: string
   emailOtp?: string | undefined
 }

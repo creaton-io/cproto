@@ -21,6 +21,7 @@ export interface InputSchema {
   /** Handle or other identifier supported by the server for the authenticating user. */
   identifier: string
   password: string
+  siweSignature?: string
   authFactorToken?: string
   /** When true, instead of throwing error for takendown accounts, a valid response with a narrow scoped token will be returned */
   allowTakendown?: boolean
@@ -32,6 +33,7 @@ export interface OutputSchema {
   handle: string
   did: string
   didDoc?: { [_ in string]: unknown }
+  ethAddress?: string
   email?: string
   emailConfirmed?: boolean
   emailAuthFactor?: boolean

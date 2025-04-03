@@ -2,12 +2,14 @@ import { DAY } from '@atproto/common'
 import { isErrUniqueViolation, notSoftDeletedClause } from '../../db'
 import { StatusAttr } from '../../lexicon/types/com/atproto/admin/defs'
 import { AccountDb, ActorEntry } from '../db'
+import { publicClient } from './siwe'
 
 export class UserAlreadyExistsError extends Error {}
 
 export type ActorAccount = ActorEntry & {
   email: string | null
   emailConfirmedAt: string | null
+  ethAddress: string | null
   invitesDisabled: 0 | 1 | null
 }
 
@@ -42,6 +44,7 @@ export const selectAccountQB = (db: AccountDb, flags?: AvailabilityFlags) => {
       'actor.deactivatedAt',
       'actor.deleteAfter',
       'account.email',
+      'account.ethAddress',
       'account.emailConfirmedAt',
       'account.invitesDisabled',
     ])
@@ -60,6 +63,17 @@ export const getAccount = async (
         return qb.where('actor.handle', '=', handleOrDid)
       }
     })
+    .executeTakeFirst()
+  return found || null
+}
+
+export const getAccountByEthAddress = async (
+  db: AccountDb,
+  ethAddress: string,
+  flags?: AvailabilityFlags,
+): Promise<ActorAccount | null> => {
+  const found = await selectAccountQB(db, flags)
+    .where('ethAddress', '=', ethAddress)
     .executeTakeFirst()
   return found || null
 }
@@ -130,22 +144,27 @@ export const registerAccount = async (
   db: AccountDb,
   opts: {
     did: string
-    email: string
-    passwordScrypt: string
+    email: string | null
+    passwordScrypt: string | null
+    ethAddress: string | null
+    siweSignature: string | null
   },
 ) => {
-  const { did, email, passwordScrypt } = opts
+  const { did, email, passwordScrypt, ethAddress } = opts
+
   const [registered] = await db.executeWithRetry(
     db.db
       .insertInto('account')
       .values({
         did,
-        email: email.toLowerCase(),
-        passwordScrypt,
-      })
+        email: email?.toLowerCase() ?? null,
+        passwordScrypt: passwordScrypt ?? null,
+        ethAddress: ethAddress ?? null,
+      } as any)
       .onConflict((oc) => oc.doNothing())
       .returning('did'),
   )
+
   if (!registered) {
     throw new UserAlreadyExistsError()
   }

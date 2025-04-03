@@ -199,6 +199,7 @@ export class OAuthStore
   async authenticateAccount({
     locale: _locale,
     username: identifier,
+    siweSignature,
     password,
     // Not supported by the PDS (yet?)
     emailOtp = undefined,
@@ -211,7 +212,7 @@ export class OAuthStore
       }
 
       const { user, appPassword, isSoftDeleted } =
-        await this.accountManager.login({ identifier, password })
+        await this.accountManager.login({ identifier, siweSignature, password })
 
       if (isSoftDeleted) {
         throw new InvalidRequestError('Account was taken down')
