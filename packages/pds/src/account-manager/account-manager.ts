@@ -1,5 +1,6 @@
 import { KeyObject } from 'node:crypto'
 import { CID } from 'multiformats/cid'
+import { Hex } from 'viem'
 import { HOUR, wait } from '@atproto/common'
 import { IdResolver } from '@atproto/identity'
 import { isValidTld } from '@atproto/syntax'
@@ -22,6 +23,7 @@ import * as invite from './helpers/invite'
 import * as password from './helpers/password'
 import * as repo from './helpers/repo'
 import * as scrypt from './helpers/scrypt'
+import * as siwe from './helpers/siwe'
 import * as token from './helpers/token'
 
 export { AccountStatus, formatAccountStatus } from './helpers/account'
@@ -155,6 +157,8 @@ export class AccountManager {
     did,
     handle,
     email,
+    ethAddress,
+    siweSignature,
     password,
     repoCid,
     repoRev,
@@ -165,6 +169,8 @@ export class AccountManager {
     did: string
     handle: string
     email?: string
+    ethAddress?: string
+    siweSignature?: string
     password?: string
     repoCid: CID
     repoRev: string
@@ -177,26 +183,44 @@ export class AccountManager {
       : undefined
 
     const now = new Date().toISOString()
+
+    if (ethAddress && siweSignature) {
+      const validSignature = await this.verifySIWERegistration(
+        ethAddress,
+        siweSignature as `0x${string}`,
+      )
+      if (!validSignature) {
+        throw new AuthRequiredError('Invalid signature')
+      }
+    }
+
     await this.db.transaction(async (dbTxn) => {
       if (inviteCode) {
         await invite.ensureInviteIsAvailable(dbTxn, inviteCode)
       }
       await Promise.all([
         account.registerActor(dbTxn, { did, handle, deactivated }),
-        email && passwordScrypt
-          ? account.registerAccount(dbTxn, { did, email, passwordScrypt })
+        ethAddress || passwordScrypt
+          ? account.registerAccount(dbTxn, {
+              did,
+              email: email ?? null,
+              passwordScrypt: passwordScrypt ?? null,
+              ethAddress: ethAddress ?? null,
+              siweSignature: siweSignature ?? null,
+            })
           : Promise.resolve(),
         invite.recordInviteUse(dbTxn, {
           did,
           inviteCode,
           now,
         }),
-        refreshJwt &&
-          auth.storeRefreshToken(
-            dbTxn,
-            auth.decodeRefreshToken(refreshJwt),
-            null,
-          ),
+        refreshJwt
+          ? auth.storeRefreshToken(
+              dbTxn,
+              auth.decodeRefreshToken(refreshJwt),
+              null,
+            )
+          : Promise.resolve(),
         repo.updateRoot(dbTxn, did, repoCid, repoRev),
       ])
     })
@@ -206,6 +230,8 @@ export class AccountManager {
     did: string
     handle: string
     email?: string
+    ethAddress?: string
+    siweSignature?: string
     password?: string
     repoCid: CID
     repoRev: string
@@ -342,15 +368,25 @@ export class AccountManager {
     return auth.revokeRefreshToken(this.db, id)
   }
 
+  async siweLogin(did: string): Promise<string> {
+    return siwe.siweLogin(this.db, did)
+  }
+
+  async siweRegistration(ethAddress: string): Promise<string> {
+    return siwe.siweRegistration(this.db, ethAddress)
+  }
+
   // Login
   // ----------
 
   async login({
     identifier,
+    siweSignature,
     password,
   }: {
     identifier: string
-    password: string
+    siweSignature?: string | undefined
+    password: string | undefined
   }): Promise<{
     user: ActorAccount
     appPassword: password.AppPassDescript | null
@@ -376,11 +412,12 @@ export class AccountManager {
       const isSoftDeleted = softDeleted(user)
 
       let appPassword: password.AppPassDescript | null = null
-      const validAccountPass = await this.verifyAccountPassword(
-        user.did,
-        password,
-      )
-      if (!validAccountPass) {
+      const validAccountPass = siweSignature
+        ? await this.verifySIWELogin(user.did, siweSignature as `0x${string}`)
+        : password
+          ? await this.verifyAccountPassword(user.did, password)
+          : false
+      if (!validAccountPass && password) {
         // takendown/suspended accounts cannot login with app password
         if (isSoftDeleted) {
           throw new AuthRequiredError('Invalid identifier or password')
@@ -430,6 +467,17 @@ export class AccountManager {
         auth.revokeAppPasswordRefreshToken(dbTxn, did, name),
       ]),
     )
+  }
+
+  async verifySIWELogin(did: string, siweSignature: Hex): Promise<boolean> {
+    return siwe.verifySIWELogin(this.db, did, siweSignature)
+  }
+
+  async verifySIWERegistration(
+    ethAddress: string,
+    siweSignature: Hex,
+  ): Promise<boolean> {
+    return siwe.verifySIWERegistration(this.db, ethAddress, siweSignature)
   }
 
   // Invites

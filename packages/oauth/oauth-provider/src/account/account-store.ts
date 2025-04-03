@@ -57,6 +57,7 @@ export const authenticateAccountDataSchema = z
   .object({
     locale: localeSchema,
     username: z.string(),
+    siweSignature: z.string(),
     password: oldPasswordSchema,
     emailOtp: tokenSchema.optional(),
   })

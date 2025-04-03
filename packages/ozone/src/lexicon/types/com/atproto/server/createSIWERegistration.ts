@@ -14,33 +14,18 @@ import { HandlerAuth, HandlerPipeThrough } from '@atproto/xrpc-server'
 
 const is$typed = _is$typed,
   validate = _validate
-const id = 'com.atproto.server.createSession'
+const id = 'com.atproto.server.createSIWERegistration'
 
 export interface QueryParams {}
 
 export interface InputSchema {
-  /** Handle or other identifier supported by the server for the authenticating user. */
-  identifier: string
-  password: string
-  siweSignature?: string
-  authFactorToken?: string
-  /** When true, instead of throwing error for takendown accounts, a valid response with a narrow scoped token will be returned */
-  allowTakendown?: boolean
+  /** EthAddress the user wants to register with. */
+  ethAddress: string
 }
 
 export interface OutputSchema {
-  accessJwt: string
-  refreshJwt: string
-  handle: string
-  did: string
-  didDoc?: { [_ in string]: unknown }
-  ethAddress?: string
-  email?: string
-  emailConfirmed?: boolean
-  emailAuthFactor?: boolean
-  active?: boolean
-  /** If active=false, this optional field indicates a possible reason for why the account is not active. If active=false and no status is supplied, then the host makes no claim for why the repository is no longer being hosted. */
-  status?: 'takendown' | 'suspended' | 'deactivated' | (string & {})
+  /** The SIWE message to be signed by the user's wallet. */
+  siweMessage: string
 }
 
 export interface HandlerInput {
@@ -57,7 +42,6 @@ export interface HandlerSuccess {
 export interface HandlerError {
   status: number
   message?: string
-  error?: 'AccountTakedown' | 'AuthFactorTokenRequired'
 }
 
 export type HandlerOutput = HandlerError | HandlerSuccess | HandlerPipeThrough

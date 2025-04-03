@@ -283,6 +283,7 @@ export class CredentialSession implements SessionManager {
         refreshJwt: res.data.refreshJwt,
         handle: res.data.handle,
         did: res.data.did,
+        ethAddress: data.ethAddress,
         email: data.email,
         emailConfirmed: false,
         emailAuthFactor: false,
@@ -307,7 +308,8 @@ export class CredentialSession implements SessionManager {
     try {
       const res = await this.server.createSession({
         identifier: opts.identifier,
-        password: opts.password,
+        password: opts.password ?? '',
+        siweSignature: opts.siweSignature ?? '',
         authFactorToken: opts.authFactorToken,
         allowTakendown: opts.allowTakendown,
       })

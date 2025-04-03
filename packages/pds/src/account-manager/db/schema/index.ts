@@ -8,6 +8,8 @@ import * as emailToken from './email-token'
 import * as inviteCode from './invite-code'
 import * as refreshToken from './refresh-token'
 import * as repoRoot from './repo-root'
+import * as siweLogin from './siwe-login'
+import * as siweRegistration from './siwe-registration'
 import * as token from './token'
 import * as usedRefreshToken from './used-refresh-token'
 
@@ -22,7 +24,9 @@ export type DatabaseSchema = actor.PartialDB &
   appPassword.PartialDB &
   repoRoot.PartialDB &
   inviteCode.PartialDB &
-  emailToken.PartialDB
+  emailToken.PartialDB &
+  siweLogin.PartialDB &
+  siweRegistration.PartialDB
 
 export type { Actor, ActorEntry } from './actor'
 export type { Account, AccountEntry } from './account'
@@ -36,3 +40,5 @@ export type { RefreshToken } from './refresh-token'
 export type { AppPassword } from './app-password'
 export type { InviteCode, InviteCodeUse } from './invite-code'
 export type { EmailToken, EmailTokenPurpose } from './email-token'
+export type { SIWELogin } from './siwe-login'
+export type { SIWERegistration } from './siwe-registration'

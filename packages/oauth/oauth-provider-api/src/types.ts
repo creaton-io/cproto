@@ -2,6 +2,7 @@ export type Account = {
   sub: string
   aud: string | [string, ...string[]]
 
+  ethAddress?: string
   email?: string
   email_verified?: boolean
   name?: string

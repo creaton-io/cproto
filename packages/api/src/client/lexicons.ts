@@ -2395,6 +2395,16 @@ export const schemaDict = {
                 description:
                   'Initial account password. May need to meet instance-specific password strength requirements.',
               },
+              ethAddress: {
+                type: 'string',
+                description:
+                  'Initial ethereum address to be associated with the account, used to log in with signature',
+              },
+              siweSignature: {
+                type: 'string',
+                description:
+                  'Signature to verify if user is owner of ethAddress',
+              },
               recoveryKey: {
                 type: 'string',
                 description:
@@ -2626,6 +2636,84 @@ export const schemaDict = {
       },
     },
   },
+  ComAtprotoServerCreateSIWELogin: {
+    lexicon: 1,
+    id: 'com.atproto.server.createSIWELogin',
+    defs: {
+      main: {
+        type: 'procedure',
+        description: 'Creates a SIWE (Sign-In with Ethereum) message.',
+        input: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['identifier'],
+            properties: {
+              identifier: {
+                type: 'string',
+                description:
+                  'Handle or other identifier supported by the server for the authenticating user.',
+              },
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['siweMessage'],
+            properties: {
+              siweMessage: {
+                type: 'string',
+                description:
+                  "The SIWE message to be signed by the user's wallet.",
+              },
+            },
+          },
+        },
+        errors: [],
+      },
+    },
+  },
+  ComAtprotoServerCreateSIWERegistration: {
+    lexicon: 1,
+    id: 'com.atproto.server.createSIWERegistration',
+    defs: {
+      main: {
+        type: 'procedure',
+        description:
+          'Creates a SIWE (Sign-In with Ethereum) message for registration.',
+        input: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['ethAddress'],
+            properties: {
+              ethAddress: {
+                type: 'string',
+                description: 'EthAddress the user wants to register with.',
+              },
+            },
+          },
+        },
+        output: {
+          encoding: 'application/json',
+          schema: {
+            type: 'object',
+            required: ['siweMessage'],
+            properties: {
+              siweMessage: {
+                type: 'string',
+                description:
+                  "The SIWE message to be signed by the user's wallet.",
+              },
+            },
+          },
+        },
+        errors: [],
+      },
+    },
+  },
   ComAtprotoServerCreateSession: {
     lexicon: 1,
     id: 'com.atproto.server.createSession',
@@ -2645,6 +2733,9 @@ export const schemaDict = {
                   'Handle or other identifier supported by the server for the authenticating user.',
               },
               password: {
+                type: 'string',
+              },
+              siweSignature: {
                 type: 'string',
               },
               authFactorToken: {
@@ -2680,6 +2771,9 @@ export const schemaDict = {
               },
               didDoc: {
                 type: 'unknown',
+              },
+              ethAddress: {
+                type: 'string',
               },
               email: {
                 type: 'string',
@@ -15203,6 +15297,9 @@ export const ids = {
   ComAtprotoServerCreateAppPassword: 'com.atproto.server.createAppPassword',
   ComAtprotoServerCreateInviteCode: 'com.atproto.server.createInviteCode',
   ComAtprotoServerCreateInviteCodes: 'com.atproto.server.createInviteCodes',
+  ComAtprotoServerCreateSIWELogin: 'com.atproto.server.createSIWELogin',
+  ComAtprotoServerCreateSIWERegistration:
+    'com.atproto.server.createSIWERegistration',
   ComAtprotoServerCreateSession: 'com.atproto.server.createSession',
   ComAtprotoServerDeactivateAccount: 'com.atproto.server.deactivateAccount',
   ComAtprotoServerDefs: 'com.atproto.server.defs',

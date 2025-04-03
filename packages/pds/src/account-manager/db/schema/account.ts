@@ -4,6 +4,7 @@ export interface Account {
   did: string
   email: string
   passwordScrypt: string
+  ethAddress: string | null
   emailConfirmedAt: string | null
   invitesDisabled: Generated<0 | 1>
 }
