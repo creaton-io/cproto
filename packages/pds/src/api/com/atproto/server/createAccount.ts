@@ -1,4 +1,4 @@
-import * as plc from '@did-plc/lib'
+import * as plc from '@cproto/did-plc-lib'
 import { isEmailValid } from '@hapi/address'
 import { isDisposableEmail } from 'disposable-email-domains-js'
 import { DidDocument, MINUTE, check } from '@atproto/common'
@@ -129,7 +129,7 @@ const validateInputsForEntrywayPds = async (
     )
   }
   try {
-    await plc.assureValidOp(plcOp)
+    await plc.assureValidCreationOp(did, plcOp)
     await plc.assureValidSig([plcRotationKey], plcOp)
   } catch (err) {
     throw new InvalidRequestError('invalid plc operation', 'IncompatibleDidDoc')
@@ -272,6 +272,7 @@ const formatDidAndPlcOp = async (
     signingKey: signingKey.did(),
     rotationKeys,
     handle,
+    ethAddress: input.ethAddress,
     pds: ctx.cfg.service.publicUrl,
     signer: ctx.plcRotationKey,
   })
