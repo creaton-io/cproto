@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "packages": {
+    "@atproto/api": {
+      "signature": "75b981cb9cbce2b7d56cc40d962439d5",
+      "file": true,
+      "replaced": "workspace:^"
+    }
+  }
+}
