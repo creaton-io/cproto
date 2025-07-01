@@ -1,4 +1,4 @@
-import { Client as PlcClient } from '@did-plc/lib'
+import { Client as PlcClient } from '@cproto/did-plc-lib'
 import getPort from 'get-port'
 import * as ui8 from 'uint8arrays'
 import { AtpAgent } from '@atproto/api'

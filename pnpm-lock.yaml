@@ -498,6 +498,9 @@ importers:
       '@atproto/xrpc-server':
         specifier: workspace:^
         version: link:../xrpc-server
+      '@cproto/did-plc-lib':
+        specifier: ^0.0.8
+        version: 0.0.8
       '@did-plc/lib':
         specifier: ^0.0.1
         version: 0.0.1
@@ -1416,8 +1419,8 @@ importers:
         specifier: workspace:*
         version: link:../internal/xrpc-utils
       '@atproto/api':
-        specifier: workspace:^
-        version: link:../api
+        specifier: file:.yalc/@atproto/api
+        version: file:packages/pds/.yalc/@atproto/api
       '@atproto/aws':
         specifier: workspace:^
         version: link:../aws
@@ -1449,8 +1452,8 @@ importers:
         specifier: workspace:^
         version: link:../xrpc-server
       '@cproto/did-plc-lib':
-        specifier: ^0.0.6
-        version: 0.0.6
+        specifier: ^0.0.8
+        version: 0.0.8
       '@did-plc/lib':
         specifier: ^0.0.4
         version: 0.0.4
@@ -1844,7 +1847,7 @@ packages:
       graphemer: 1.4.0
       multiformats: 9.9.0
       uint8arrays: 3.0.0
-      zod: 3.23.8
+      zod: 3.24.2
     dev: false
 
   /@atproto/common@0.1.0:
@@ -1882,12 +1885,22 @@ packages:
       one-webcrypto: 1.0.3
       uint8arrays: 3.0.0
 
-  /@atproto/crypto@0.3.0:
-    resolution: {integrity: sha512-bhcxRTL4fgRY2YX/St0x4o0oDUp18QIPD7ek+7v8UKA0HpsCGQYbo8w9d9hUvwwty5X5p00cYF2tbggUWaPy7A==}
+  /@atproto/crypto@0.4.3:
+    resolution: {integrity: sha512-YSSUAvkx+ldpXw97NXZWfLx/prgh5YJ2K0BCw51JCJmXSRp6KhhwvOm4J+K/s5hwpssyuDCVTXknyS4PHwaK5g==}
     dependencies:
       '@noble/curves': 1.8.1
       '@noble/hashes': 1.7.1
       uint8arrays: 3.0.0
+    dev: false
+
+  /@atproto/lexicon@0.4.11:
+    resolution: {integrity: sha512-btefdnvNz2Ao2I+qbmj0F06HC8IlrM/IBz6qOBS50r0S6uDf5tOO+Mv2tSVdimFkdzyDdLtBI1sV36ONxz2cOw==}
+    dependencies:
+      '@atproto/common-web': 0.4.2
+      '@atproto/syntax': 0.4.0
+      iso-datestring-validator: 2.2.2
+      multiformats: 9.9.0
+      zod: 3.24.2
     dev: false
 
   /@atproto/pds@0.3.0-entryway.3:
@@ -1941,6 +1954,17 @@ packages:
       - pg-native
       - supports-color
     dev: true
+
+  /@atproto/syntax@0.4.0:
+    resolution: {integrity: sha512-b9y5ceHS8YKOfP3mdKmwAx5yVj9294UN7FG2XzP6V5aKUdFazEYRnR9m5n5ZQFKa3GNvz7de9guZCJ/sUTcOAA==}
+    dev: false
+
+  /@atproto/xrpc@0.7.0:
+    resolution: {integrity: sha512-SfhP9dGx2qclaScFDb58Jnrmim5nk4geZXCqg6sB0I/KZhZEkr9iIx1hLCp+sxkIfEsmEJjeWO4B0rjUIJW5cw==}
+    dependencies:
+      '@atproto/lexicon': 0.4.11
+      zod: 3.24.2
+    dev: false
 
   /@aws-crypto/crc32@2.0.0:
     resolution: {integrity: sha512-TvE1r2CUueyXOuHdEigYjIZVesInd9KN+K/TFFNfkkxRThiNxO6i4ZqqAVMoEjAamZZ1AA8WXJkjCz7YShHPQA==}
@@ -5160,16 +5184,16 @@ packages:
       - supports-color
     dev: true
 
-  /@cproto/did-plc-lib@0.0.6:
-    resolution: {integrity: sha512-MnlOIJ/ZQxcFrrADNTIngQtsiM0gXhISut0pRWjRxbSVRM/xow92SS6NN440xVdQIp1Lb/fZXWbFomvYkSOrBA==}
+  /@cproto/did-plc-lib@0.0.8:
+    resolution: {integrity: sha512-OjPJgO0OyL1gHl+ddTOYyGIm9ejIndEq+1jjwicYicqL2YxtMQPomTOmSEEwImfSDJ9JR95G6ZqAKFlOemFYeA==}
     dependencies:
       '@atproto/common': 0.3.0
-      '@atproto/crypto': 0.3.0
+      '@atproto/crypto': 0.4.3
       '@ipld/dag-cbor': 7.0.3
       axios: 1.6.7
       multiformats: 9.9.0
       uint8arrays: 3.0.0
-      zod: 3.23.8
+      zod: 3.24.2
     transitivePeerDependencies:
       - debug
     dev: false
@@ -18278,3 +18302,17 @@ packages:
 
   /zod@3.24.2:
     resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+
+  file:packages/pds/.yalc/@atproto/api:
+    resolution: {directory: packages/pds/.yalc/@atproto/api, type: directory}
+    name: '@atproto/api'
+    dependencies:
+      '@atproto/common-web': 0.4.2
+      '@atproto/lexicon': 0.4.11
+      '@atproto/syntax': 0.4.0
+      '@atproto/xrpc': 0.7.0
+      await-lock: 2.2.2
+      multiformats: 9.9.0
+      tlds: 1.234.0
+      zod: 3.24.2
+    dev: false

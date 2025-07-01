@@ -1,4 +1,4 @@
-import { Client as PlcClient } from '@did-plc/lib'
+import { Client as PlcClient } from '@cproto/did-plc-lib'
 import * as plc from '@did-plc/server'
 import getPort from 'get-port'
 import { PlcConfig } from './types'

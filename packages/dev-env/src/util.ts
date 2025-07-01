@@ -1,4 +1,4 @@
-import * as plc from '@did-plc/lib'
+import * as plc from '@cproto/did-plc-lib'
 import { request } from 'undici'
 import { Secp256k1Keypair } from '@atproto/crypto'
 import { IdResolver } from '@atproto/identity'

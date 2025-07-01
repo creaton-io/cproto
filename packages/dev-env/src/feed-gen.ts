@@ -1,6 +1,6 @@
 import events from 'node:events'
 import http from 'node:http'
-import * as plc from '@did-plc/lib'
+import * as plc from '@cproto/did-plc-lib'
 import express from 'express'
 import getPort from 'get-port'
 import { Secp256k1Keypair } from '@atproto/crypto'
