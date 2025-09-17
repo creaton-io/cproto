@@ -123,10 +123,27 @@ export const siweLogin = async (
       statement: 'Log in to Creaton Account',
     })
 
-    await db.db
-      .insertInto('siwe_login')
-      .values({ did, createdAt, siweMessage })
-      .execute()
+    // Check if an entry already exists for this DID
+    const existing = await db.db
+      .selectFrom('siwe_login')
+      .where('did', '=', did)
+      .selectAll()
+      .executeTakeFirst()
+
+    if (existing) {
+      // Update the existing entry
+      await db.db
+        .updateTable('siwe_login')
+        .set({ siweMessage, createdAt })
+        .where('did', '=', did)
+        .execute()
+    } else {
+      // Insert a new entry
+      await db.db
+        .insertInto('siwe_login')
+        .values({ did, createdAt, siweMessage })
+        .execute()
+    }
   } else {
     throw new InvalidRequestError('could not find account')
   }
@@ -174,37 +191,3 @@ export const siweRegistration = async (
 
   return siweMessage
 }
-
-// export const verifySIWE = async (db: AccountDb, nonce: string, did: string): Promise<boolean> => {
-//   const result = await db.db
-//     .updateTable('siwe_nonce')
-//     .set({ used: true })
-//     .where('nonce', '=', nonce)
-//     .where('did', '=', did)
-//     .where('used', '=', false)
-//     .executeTakeFirst()
-
-//   return result.numUpdatedRows === 1n
-// }
-
-// export const cleanupSIWEs = async (db: AccountDb): Promise<void> => {
-//   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
-//   await db.db
-//     .deleteFrom('siwe_nonce')
-//     .where('createdAt', '<', oneHourAgo)
-//     .execute()
-// }
-
-// export const getSIWEForUser = async (db: AccountDb, identifier: string): Promise<string> => {
-//   const user = await db.db
-//     .selectFrom('account')
-//     .where('did', '=', identifier)
-//     .orWhere('email', '=', identifier.toLowerCase())
-//     .selectAll()
-//     .executeTakeFirst()
-
-//   if (!user) {
-//     throw new InvalidRequestError('User not found')
-//   }
-//return createSIWE(db, user.did)
-//}
